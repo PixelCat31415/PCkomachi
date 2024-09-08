@@ -1,4 +1,11 @@
+# editor stuff
+.vscode/**/*
+
+# ignore built codebook (will be auto-built with github actions)
+codebook/codebook.pdf
+
 # ------------------------------------------
+
 # TeX.gitignore from https://github.com/github/gitignore/blob/main/TeX.gitignore
 
 ## Core latex/pdflatex auxiliary files:
