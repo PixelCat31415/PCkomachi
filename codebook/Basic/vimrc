@@ -1,0 +1,6 @@
+sy on
+set ru nu rnu cul cin et bs=2 ls=2 so=8 sw=4 sts=4 mouse=a
+inoremap {<CR> {<CR>}<Esc>O
+noremap <F9> <Esc>:w<CR>:!g++ "%:p" -o "%:p:r".out -std=c++14 -O2 -Wall -Wextra -Wshadow -Wconversion -fsanitize=address,undefined<CR>
+noremap <F10> <Esc>:!"%:p:r".out<CR>
+map <F11> <F9><F10>
