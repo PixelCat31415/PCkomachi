@@ -40,7 +40,6 @@ struct AC {
     int now = 0, ans = 0;
     for (char c : s) {
       now = to[now][c - 'a'];
-      if (ch[now][c - 'a']) now = ch[now][c - 'a'];
       ans += cnt[now];
     }
     return ans;
