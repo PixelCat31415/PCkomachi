@@ -11,8 +11,8 @@ bool isin(Line l0, Line l1, Line l2) {
 /* --^-- Line.X --^-- Line.Y --^-- */
 vector<Line> halfPlaneInter(vector<Line> arr) {
   sort(ALL(arr), [&](Line a, Line b) -> int {
-    if (cmp(a.Y - a.X, b.Y - b.X, 0) != -1)
-      return cmp(a.Y - a.X, b.Y - b.X, 0);
+    if (polarOri(a.Y - a.X, b.Y - b.X) != 0)
+      return cmpPolar(a.Y - a.X, b.Y - b.X);
     return ori(a.X, a.Y, b.Y) < 0;
   });
   deque<Line> dq(1, arr[0]);
@@ -25,7 +25,7 @@ vector<Line> halfPlaneInter(vector<Line> arr) {
       dq.pop_front();
   };
   for (auto p : arr)
-    if (cmp(dq.back().Y - dq.back().X, p.Y - p.X, 0) != -1)
+    if (polarOri(dq.back().Y - dq.back().X, p.Y - p.X) != 0)
       pop_back(2, p), pop_front(2, p), dq.pb(p);
   pop_back(3, dq[0]), pop_front(3, dq.back());
   return vector<Line>(ALL(dq));

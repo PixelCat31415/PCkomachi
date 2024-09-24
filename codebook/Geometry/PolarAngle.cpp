@@ -1,7 +1,10 @@
-int cmp(pdd a,pdd b,bool same=1){ //polar angle sort
-  #define is_neg(k) (sign(k.Y)<0||(sign(k.Y)==0&&sign(k.X)<0))
-  int A=is_neg(a),B=is_neg(b);
-  if(A!=B) return A<B;
-  if(sign(a^b)==0) return (same?abs2(a)<abs2(b):-1);
-  return sign(a^b)>0;
+bool upper(Pt p) {
+  return p.Y > 0 || (p.Y == 0 && p.X >= 0);
+}
+int polarOri(Pt p1, Pt p2) {  // p1 (-1 <)(0 =)(1 >) p2
+  if(upper(p1) != upper(p2)) return upper(p1) ? -1 : 1;
+  return -sign(p1 ^ p2);
+}
+bool cmpPolar(Pt p1, Pt p2) {  // 0...2pi CCW
+  return polarOri(p1, p2) < 0;
 }
