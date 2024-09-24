@@ -5,8 +5,8 @@ struct HLD {
   int n, _t;
   HLD () = default;
   HLD (int _n) : n(_n) {
-    pt.assign(n, -1), hd.assign(n, -1), par.assign(n, -1);
-    idx.assign(n, 0), sz.assign(n, 0), dep.assign(n, 0), vis.assign(n, 0);
+    pt.assign(n,-1), hd.assign(n,-1), par.assign(n,-1);
+    idx.assign(n,0), sz.assign(n,0), dep.assign(n,0), vis.assign(n,0);
     _t = 0;
     for (int i = 0; i < n; ++i) if (!vis[i]) {
       dfs1(i, -1);

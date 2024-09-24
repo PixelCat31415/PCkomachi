@@ -1,50 +1,50 @@
-vector <int> adj[N];
-struct VertexBCC {
-  vector <int> newadj[N << 1];
-  vector <vector <int>> idx;
-  vector <int> low, dep, par, stk;
-  vector <bool> cut;
-  int n, nbcc;
-  VertexBCC () = default;
-  VertexBCC (int _n) : n(_n), nbcc(0) {
-    low.assign(n, -1), dep.assign(n, -1), idx.assign(n, vector <int> ());
-    par.assign(n, -1), cut.assign(n, false);
-    for (int i = 0; i < n; ++i) if (dep[i] == -1)
-      dfs(i, -1);
-    // idx  < n -> bcc
-    // idx >= n -> cut point
-    for (int i = 0; i < n; ++i) if (cut[i]) {
-      for (int j : idx[i]) {
-        newadj[j].push_back(i + n);
-        newadj[i + n].push_back(j);
+struct BCC{ // 0-based, allow multi edges but not allow loops
+  int n, m, cnt = 0;
+  // n:|V|, m:|E|, cnt:#bcc
+  // bcc i : vertices bcc_v[i] and edges bcc_e[i]
+  vector<vector<int>> bcc_v, bcc_e;
+  vector<vector<pii>> g; // original graph
+  vector<pii> edges; // 0-based
+  BCC(int _n, vector<pii> _edges):
+    n(_n), m(SZ(_edges)), g(_n), edges(_edges){
+      for(int i = 0; i < m; i++){
+        auto [u, v] = edges[i];
+        g[u].pb(pii(v, i)); g[v].pb(pii(u, i));
       }
     }
-  }
-  void dfs(int v, int pa) {
-    low[v] = dep[v] = ~pa ? dep[pa] + 1 : 0;
-    stk.push_back(v);
-    par[v] = pa;
-    int ch = 0;
-    for (int u : adj[v]) if (u != pa) {
-      if (dep[u] == -1) {
-        dfs(u, v);
-        low[v] = min(low[v], low[u]);
-        ch++;
-        if (low[u] >= dep[v]) {
-          // v is a cut point
-          cut[v] = true;
-          int x;
-          do {
-            x = stk.back(), stk.pop_back();
-            idx[x].push_back(nbcc);
-          } while (x != u);
-          idx[v].push_back(nbcc++);
+  void make_bcc(){ bcc_v.pb(); bcc_e.pb(); cnt++; }
+  // modify these if you need more information
+  void add_v(int v){ bcc_v.back().pb(v); }
+  void add_e(int e){ bcc_e.back().pb(e); }
+  void build(){
+    vector<int> in(n, -1), low(n, -1), stk;
+    vector<vector<int>> up(n);
+    int ts = 0;
+    auto _dfs = [&](auto dfs, int now, int par, int pe) -> void{
+      if(pe != -1) up[now].pb(pe);
+      in[now] = low[now] = ts++;
+      stk.pb(now);
+      for(auto [v, e] : g[now]){
+        if(e == pe) continue;
+        if(in[v] != -1){
+          if(in[v] < in[now]) up[now].pb(e);
+          low[now] = min(low[now], in[v]);
+          continue;
         }
-      } else {
-        low[v] = min(low[v], dep[u]);
+        dfs(dfs, v, now, e);
+        low[now] = min(low[now], low[v]);
       }
-    }
-    if (pa == -1 && ch < 2)
-      cut[v] = false;
+      if((now != par && low[now] >= in[par]) || (now == par && SZ(g[now]) == 0)){
+        make_bcc();
+        for(int v = stk.back();; v = stk.back()){
+          stk.pop_back(), add_v(v);
+          for(int e : up[v]) add_e(e);
+          if(v == now) break;
+        }
+        if(now != par) add_v(par);
+      }
+    };
+    for(int i = 0; i < n; i++)
+      if(in[i] == -1) _dfs(_dfs, i, i, -1);
   }
 };
