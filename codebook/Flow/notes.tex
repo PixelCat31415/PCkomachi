@@ -1,0 +1,36 @@
+\begin{itemize}
+	\itemsep-0.3em
+	\item Bipartite Matching Restore Answer
+
+	\texttt{runBfs();} Answer is $\{!vis[x] | x \in L\} \cup \{vis[x] | x \in R\}$
+	
+	\item Bipartite Minimum Weight Vertex Covering
+
+	$S \to \{x | x \in L\}$, cap = weight of vertex $x$\\
+	$\{x | x \in L\} \to \{y | y \in R\}$, cap = $\infty$\\
+	$\{y | y \in R\} \to T$, cap = weight of vertex $y$
+	
+	For general version, change Dinic to MCMF and:
+	
+	$S \to \{x | x \in L\}$, cap = weight of vertex $x$, cost = $0$\\
+	$\{x | x \in L\} \to \{y | y \in R\}$, cap = $\infty$, cost = $-w$\\
+	$\{y | y \in R\} \to T$, cap = weight of vertex $y$, cost = $0$
+	
+	\item Useful Lemma
+
+	(Bipartite Maximum Weight Independent Set) + \\
+	(Bipartite Minimum Weight Vertex Covering) = weight sum
+
+	\item Min Cut Model
+
+	choose $A$ but not choose $B$ cost $x$: $A \to B$, cap = $x$\\
+	choose $A$ cost $x$: $A \to T$, cap = $x$\\
+	not choose $A$ cost $x$: $S \to A$, cap = $x$\\
+	choose $A$ gain $x$ $\implies$ not choose $A$ cost $x$, $tot += x$\\
+	choose $A$ and choose $B$ cost $x$: NO!!!\\
+	Bipartite: can flip one side
+	
+	\item Min Cut Restore Answer
+	
+	runBfs(); Answer is $\{vis[x] | x \in V\}$
+\end{itemize}
