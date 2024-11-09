@@ -16,3 +16,4 @@ template<typename T,typename ...U> void _do(T x,U ...y){cerr<<x<<", ";_do(y...);
 #define unisort(c) sort(c.begin(),c.end()),uni(c)
 #define ALL(a) a.begin(),a.end()
 #define SZ(a) ((int)a.size())
+// cpp $1 -dD -P -fpreprocessed | tr -d '[:space:]' | md5sum | cut -c-6
