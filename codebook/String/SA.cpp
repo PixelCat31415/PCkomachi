@@ -1,20 +1,22 @@
+#define FOR(i, a, b) for(int i = a; i <= b; i++)
+#define ROF(i, a, b) for(int i = a; i >= b; i--)
 int sa[N], tmp[2][N], c[N], rk[N], lcp[N];
 void buildSA(string s) {
-  int *x = tmp[0], *y = tmp[1], m = 256, n = s.length();
-  for (int i = 0; i < m; ++i) c[i] = 0;
-  for (int i = 0; i < n; ++i) c[x[i] = s[i]]++;
-  for (int i = 1; i < m; ++i) c[i] += c[i - 1];
-  for (int i = n - 1; ~i; --i) sa[--c[x[i]]] = i;
+  int *x = tmp[0], *y = tmp[1], m = 256, n = (int)s.size();
+  FOR(i, 0, m - 1) c[i] = 0;
+  FOR(i, 0, n - 1) c[x[i] = s[i]]++;
+  FOR(i, 1, m - 1) c[i] += c[i - 1];
+  ROF(i, n - 1, 0) sa[--c[x[i]]] = i;
   for (int k = 1; k < n; k <<= 1) {
-    for (int i = 0; i < m; ++i) c[i] = 0;
-    for (int i = 0; i < n; ++i) c[x[i]]++;
-    for (int i = 1; i < m; ++i) c[i] += c[i - 1];
+    FOR(i, 0, m - 1) c[i] = 0;
+    FOR(i, 0, n - 1) c[x[i]]++;
+    FOR(i, 1, m - 1) c[i] += c[i - 1];
     int p = 0;
-    for (int i = n - k; i < n; ++i) y[p++] = i;
-    for (int i = 0; i < n; ++i) if (sa[i] >= k) y[p++] = sa[i] - k;
-    for (int i = n - 1; ~i; --i) sa[--c[x[y[i]]]] = y[i];
+    FOR(i, n - k, n - 1) y[p++] = i;
+    FOR(i, 0, n - 1) if(sa[i] >= k) y[p++] = sa[i] - k;
+    ROF(i, n - 1, 0) sa[--c[x[y[i]]]] = y[i];
     y[sa[0]] = p = 0;
-    for (int i = 1; i < n; ++i) {
+    FOR(i, 1, n - 1) {
       int a = sa[i], b = sa[i - 1];
       if (!(x[a] == x[b] && a + k < n && b + k < n && x[a + k] == x[b + k])) p++;
       y[sa[i]] = p;
@@ -26,9 +28,9 @@ void buildSA(string s) {
 void buildLCP(string s) {
   // lcp[i] = LCP(sa[i - 1], sa[i])
   // lcp(i, j) = min(lcp[rk[i] + 1], lcp[rk[i] + 2], ..., lcp[rk[j]])
-  int n = s.length(), val = 0;
-  for (int i = 0; i < n; ++i) rk[sa[i]] = i;
-  for (int i = 0; i < n; ++i) {
+  int n = (int)s.size(), val = 0;
+  FOR(i, 0, n - 1) rk[sa[i]] = i;
+  FOR(i, 0, n - 1) {
     if (!rk[i]) lcp[rk[i]] = 0;
     else {
       if (val) val--;
