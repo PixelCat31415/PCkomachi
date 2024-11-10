@@ -9,15 +9,10 @@ struct MoAlgorithm {
   };
   int cur_ans;
   vector <int> ans;
-  void add(int x) {
-    // do something
-  }
-  void sub(int x) {
-    // do something
-  }
+  void add(int x) {} // do something
+  void sub(int x) {} // do something
   vector <query> Q;
-  void add_query(int l, int r, int id) {
-    // [l, r)
+  void add_query(int l, int r, int id) { // [l, r)
     Q.push_back({l, r, id});
     ans.push_back(0);
   }
@@ -30,7 +25,7 @@ struct MoAlgorithm {
       while (pr < i.r) add(a[pr++]);
       while (pl < i.l) sub(a[pl++]);
       while (pr > i.r) sub(a[--pr]);
-      ans[i.id] = cur;
+      ans[i.id] = cur_ans;
     }
   }
 };
