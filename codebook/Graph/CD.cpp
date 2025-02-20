@@ -24,6 +24,7 @@ struct CentroidDecomposition {
   void dfs_cd(int v, int pa) {
     dfs_sz(v, pa);
     int c = dfs_cen(v, pa, sz[v]);
+    cd_pa[c] = pa;
     // centroid D&C
     for (int u : adj[c]) if (cd_pa[u] == -2) {
       dfs_ans(u, c);
