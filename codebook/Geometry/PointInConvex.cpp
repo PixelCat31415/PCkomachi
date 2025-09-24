@@ -1,4 +1,4 @@
-bool PointInConvex(const vector<Pt> &C, Pt p, bool strict = true) {
+bool PointInConvex(const vector<PT> &C, PT p, bool strict = true) {
   int a = 1, b = int(C.size()) - 1, r = !strict;
   if (C.size() == 0) return false;
   if (C.size() < 3) return r && btw(C[0], C.back(), p);
