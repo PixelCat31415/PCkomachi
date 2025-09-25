@@ -1,5 +1,13 @@
+Pt circenter(Pt a, Pt b, Pt c) {
+  Pt ab = (a + b) / 2, ac = (a + c) / 2;
+  return intersect(
+    ab, ab + ccw90(b - a),
+    ac, ac + ccw90(c - a)
+  );
+}
 Cir min_enclosing(vector<Pt> &p) {
-  random_shuffle(p.begin(), p.end());
+  mt19937 rng(clock());
+  shuffle(p.begin(), p.end(), rng);
   double r = 0.0;
   Pt cent = p[0];
   for (int i = 1; i < p.size(); ++i) {
