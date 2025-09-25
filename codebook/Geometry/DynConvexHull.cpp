@@ -1,21 +1,21 @@
 struct DynamicConvexHull {
-  struct Up_cmp {
-    bool operator()(const Pt a,const Pt b) {
-      if(a.X==b.X) return a.Y<b.Y;
-      return a.X<b.X;
+  struct UpCmp {
+    bool operator()(const PT a,const PT b) const {
+      if(a.x==b.x) return a.y<b.y;
+      return a.x<b.x;
     }
   };
-  struct Down_cmp {
-    bool operator()(const Pt a,const Pt b) {
-      if (a.X==b.X) return a.Y>b.Y;
-	    return a.X>b.X;
+  struct DownCmp {
+    bool operator()(const PT a,const PT b) const {
+      if (a.x==b.x) return a.y>b.y;
+	    return a.x>b.x;
     }
   };
   template <typename T>
   struct Hull {
-    set<Pt,T> hull;
-    bool chk(Pt i,Pt j,Pt k){return ((k-i)^(j-i))>0;}
-    void insert(Pt x) {
+    set<PT,T> hull;
+    bool chk(PT i,PT j,PT k){return ((k-i)^(j-i))>0;}
+    void insert(PT x) {
       if(inside(x)) return;
       hull.insert(x);
       auto it=hull.lower_bound(x);
@@ -36,7 +36,7 @@ struct DynamicConvexHull {
         }
       }
     }
-    bool inside(Pt x) {
+    bool inside(PT x) {
       if(hull.lower_bound(x)!=hull.end()&&*hull.lower_bound(x)==x)
         return true;
       auto it=hull.lower_bound(x);
@@ -47,8 +47,8 @@ struct DynamicConvexHull {
       return ans;
     }
   };
-  Hull<Up_cmp> up;
-  Hull<Down_cmp> down;
-  void insert(Pt x){up.insert(x),down.insert(x);}
-  bool inside(Pt x){return up.inside(x)&&down.inside(x);}
+  Hull<UpCmp> up;
+  Hull<DownCmp> down;
+  void insert(PT x){up.insert(x),down.insert(x);}
+  bool inside(PT x){return up.inside(x)&&down.inside(x);}
 };

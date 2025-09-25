@@ -1,10 +1,10 @@
-bool upper(Pt p) {
-  return sign(p.Y) > 0 || (sign(p.Y) == 0 && sign(p.X) >= 0);
-}
-int polarOri(Pt p1, Pt p2) {  // p1 (-1 <)(0 =)(1 >) p2
-  if(upper(p1) != upper(p2)) return upper(p1) ? -1 : 1;
-  return -sign(p1 ^ p2);
-}
-bool cmpPolar(Pt p1, Pt p2) {  // 0...2pi CCW
-  return polarOri(p1, p2) < 0;
-}
+// CCW starting from (1, 0) inclusive, w/o tie-breaking
+int halfplane(PT p) {
+  if (sign(p * p) == 0) return 0;
+  return 1 - 2 * (sign(p.y) > 0 || (sign(p.y) == 0 && sign(p.x) > 0));
+}  // upper(-1) -> origin(0) -> lower(1)
+auto operator<=>(PT a, PT b) {
+  int ha = halfplane(a), hb = halfplane(b);
+  if (ha != hb) return ha <=> hb;
+  return 0 <=> sign(a ^ b);
+}  // before c++20: replace <=> with <
