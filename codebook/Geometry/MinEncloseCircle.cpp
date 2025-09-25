@@ -6,20 +6,15 @@ Pt circenter(Pt a, Pt b, Pt c) {
   );
 }
 Cir min_enclosing(vector<Pt> &p) {
-  mt19937 rng(clock());
-  shuffle(p.begin(), p.end(), rng);
-  double r = 0.0;
+  shuffle(p.begin(), p.end(), mt19937(clock()));
+  double r = 0;
   Pt cent = p[0];
-  for (int i = 1; i < p.size(); ++i) {
-    if (abs2(cent - p[i]) <= r) continue;
-    cent = p[i];
-    r = 0.0;
-    for (int j = 0; j < i; ++j) {
-      if (abs2(cent - p[j]) <= r) continue;
+  rep(i, p.size()) if (abs2(cent - p[i]) > r) {
+    cent = p[i]; r = 0;
+    rep(j, i) if (abs2(cent - p[j]) > r) {
       cent = (p[i] + p[j]) / 2;
       r = abs2(p[j] - cent);
-      for (int k = 0; k < j; ++k) {
-        if (abs2(cent - p[k]) <= r) continue;
+      rep(k, j) if (abs2(cent - p[k]) > r) {
         cent = circenter(p[i], p[j], p[k]);
         r = abs2(p[k] - cent);
       }
