@@ -20,14 +20,13 @@ void RotSwpLine(int n, PT* pts) {
       < make_pair(pts[j].y, pts[j].x);
   });
   rep(i, n) rk[ord[i]] = i;
-  init_order();
+  init_order(ord);  // ord[*]: point indices
   int ne = (int)ev.size();
   rep(ie, ne) {
     int i, j; tie(i, j) = ev[ie].S;
-    update_swap(i, j);
-    rk[i]++; rk[j]--;
-    ord[rk[i]] = i;
-    ord[rk[i] - 1] = j;
+    update_swap(i, j);  // i, j: point indices
+    rk[i]++; rk[j]--;   // rk[point idx]: rank in ord
+    tie(ord[rk[i]], ord[rk[i] - 1]) = tie(i, j);
     if(ie == ne - 1 || (ev[ie + 1].F <=> ev[ie].F) != 0) update_ans();
   }
 }
