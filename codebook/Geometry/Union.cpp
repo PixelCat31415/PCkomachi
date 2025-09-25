@@ -48,7 +48,7 @@ double polyUnion(vector <vector <Pt>> poly) {
         Pt c = poly[i][(j + st) % sz], d = poly[i][(j + st + 1) % sz];
         if (sign((a - b) ^ (c - d)) != 0) {
           int ok1 = ori(c, a, b) == 1, ok2 = ori(d, a, b) == 1;
-          if (ok1 ^ ok2) event.emplace_back(LinesInter({a, b}, {c, d}), ok1 ? 1 : -1);
+          if (ok1 ^ ok2) event.emplace_back(intersect(a, b, c, d), ok1 ? 1 : -1);
         } else if (ori(c, a, b) == 0 && sign((a - b) * (c - d)) > 0 && i <= cid) {
           event.emplace_back(c, -1);
           event.emplace_back(d, 1);
