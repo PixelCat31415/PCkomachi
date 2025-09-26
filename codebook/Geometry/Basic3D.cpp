@@ -4,9 +4,9 @@ struct Point {
   Point(pdd p) { x = p.X, y = p.Y, z = abs2(p); }
 };
 Point operator-(const Point &p1, const Point &p2)
-{ return Point(p1.x - p2.x, p1.y - p2.y, p1.z - p2.z); }
+{return Point(p1.x - p2.x, p1.y - p2.y, p1.z - p2.z);}
 Point operator+(const Point &p1, const Point &p2)
-{ return Point(p1.x + p2.x, p1.y + p2.y, p1.z + p2.z); }
+{return Point(p1.x + p2.x, p1.y + p2.y, p1.z + p2.z);}
 Point operator/(const Point &p1, const double &v)
 { return Point(p1.x / v, p1.y / v, p1.z / v); }
 Point cross(const Point &p1, const Point &p2)

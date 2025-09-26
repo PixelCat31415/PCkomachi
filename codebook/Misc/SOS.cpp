@@ -1,7 +1,5 @@
 //memory optimized, super easy to code.
-for(int i = 0; i<(1<<N); ++i)
-	F[i] = A[i];
-for(int i = 0;i < N; ++i) for(int mask = 0; mask < (1<<N); ++mask){
-	if(mask & (1<<i))
-		F[mask] += F[mask^(1<<i)];
+rep(i, (1 << N)) F[i] = A[i];
+rep(i, N) rep(mask, (1 << N)) {
+  if(mask & (1<<i)) F[mask] += F[mask^(1<<i)];
 }

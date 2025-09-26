@@ -1,6 +1,4 @@
-long long query(int l, int r) {
-  // ...
-}
+long long query(int l, int r);
 struct SMAWK {
   // Condition:
   // If M[1][0] < M[1][1] then M[0][0] < M[0][1]

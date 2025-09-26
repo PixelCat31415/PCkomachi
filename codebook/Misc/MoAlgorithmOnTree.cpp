@@ -1,11 +1,9 @@
-/*
-Mo's Algorithm On Tree
-Preprocess:
-1) LCA
-2) dfs with in[u] = dft++, out[u] = dft++
-3) ord[in[u]] = ord[out[u]] = u
-4) bitset<MAXN> inset
-*/
+/*  Mo's Algorithm On Tree
+    Preprocess:
+    1) LCA
+    2) dfs with in[u] = dft++, out[u] = dft++
+    3) ord[in[u]] = ord[out[u]] = u
+    4) bitset<MAXN> inset                      */
 struct Query {
   int L, R, LBid, lca;
   Query(int u, int v) {
