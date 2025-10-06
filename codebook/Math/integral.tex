@@ -1,0 +1,63 @@
+\newcommand*{\dif}{\mathop{}\!\mathrm{d}}
+
+\begin{center}
+    \begin{tabular}{c c c c c}
+        $\frac{\dif}{\dif x}$ &
+        % $\cos x$ & $-\sin x$ &
+        $\sec^2 x$ & $-\csc^2 x$ &
+        $\tan x \sec x$ & $-\cot x \csc x$ \\
+
+        $f(x)$ &
+        % $\sin x$ & $\cos x$ &
+        $\tan x$ & $\cot x$ &
+        $\sec x$ & $\csc x$ \\
+
+        $\int$ &
+        % $-\cos x$ & $\sin x$ &
+        $\ln \left|\sec x\right|$ & $-\ln \left|\csc x\right|$ &
+        $\ln \left|\tan x + \sec x\right|$ & $-\ln \left|\cot x + \csc x\right|$ \\
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{c c c c c}
+        $\frac{\dif}{\dif x}$ &
+        $\frac{1}{\sqrt{1 - x^2}}$ & $\frac{-1}{\sqrt{1 - x^2}}$ & $\frac{1}{x^2 + 1}$ &
+        $\sec^3 x$ \\
+
+        $f(x)$ &
+        $\asin x$ & $\acos x$ & $\atan x$ &
+        $\frac{1}{2} \left(\sec x \tan x + \ln \left| \sec x + \tan x \right|\right)$ \\
+    \end{tabular}
+\end{center}
+
+\begin{itemize}
+    \item
+    $
+        \int_{0}^{\frac{\pi}{2}} \sin^{2k} \dif x = \frac{\pi}{2} \cdot \frac{1 \cdot 3 \cdots (2k - 1)}{2 \cdot 4 \cdots (2k)}
+        \quad\quad
+        \int_{0}^{\frac{\pi}{2}} \sin^{2k + 1} \dif x = \frac{2 \cdot 4 \cdots (2k)}{3 \cdot 5 \cdots (2k + 1)}
+    $
+
+    \item
+    $
+        \iint f(x, y) \dif x \dif y
+        = \iint f(g(u, v), h(u, v)) \begin{vmatrix}
+            \partial x / \partial u & \partial x / \partial v \\
+            \partial y / \partial u & \partial y / \partial v \\
+        \end{vmatrix} \dif u \dif v
+    $
+
+    \item
+    polar: $
+        % \iint f(x, y) \dif A =
+        \iint r \cdot f(r \cos \theta, r \sin \theta) \dif r \dif \theta
+    $ \\
+    spherical: $
+        % \iiint f(x, y, z) \dif V =
+        \iiint \rho^2 \sin \phi \cdot f(\rho \sin \phi \cos \theta, \rho \sin \phi \sin \theta, \rho \cos \theta) \dif \phi \dif \theta \dif \rho
+    $
+\end{itemize}
+
+
+
