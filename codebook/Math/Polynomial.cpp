@@ -161,6 +161,92 @@ struct Poly : vector<ll> { // coefficients in [0, P)
     fi(0, n()) A[i] = C[n() + i] * in[i] % P;
     return A;
   }
+  // sum_j[x^j]f^i for i=0,1,...,m
+  vector<ll> power_proj(Poly wt, int m) { // 1e5 2s, MAXN >= 4 * n()
+    // wt.size() = n(), (*this[0]) == 0
+    int sz = 1;
+    while (sz < n()) sz <<= 1;
+    Poly f(*this, sz);
+    wt.isz(sz).irev();
+    int k = 1, ksz2 = 2 * sz * k, ksz4 = 4 * sz * k;
+    Poly _P(2 * sz, 0), _Q(2 * sz, 0);
+    rep(i, sz) _P[i] = wt[i], _Q[i] = (P - f[i]) % P;
+    while (sz > 1) {
+      Poly R(ksz2);
+      rep(i, ksz2) R[i] = (i % 2 == 0 ? _Q[i] : (P - _Q[i]) % P);
+      Poly PQ = _P.Mul(R), QQ = _Q.Mul(R);
+      PQ.isz(ksz4), QQ.isz(ksz4);
+      rep(i, ksz2) {
+        if((PQ[ksz2 + i] += _P[i]) >= P) PQ[ksz2 + i] -= P;
+        if((QQ[ksz2 + i] += _Q[i] + R[i]) >= P) QQ[ksz2 + i] -= P;
+        if(QQ[ksz2 + i] >= P) QQ[ksz2 + i] -= P;
+      }
+      fill(ALL(_P), 0), fill(ALL(_Q), 0);
+      rep(j, 2 * k) rep(i, sz / 2) {
+        _P[sz * j + i] = PQ[(2 * sz) * j + (2 * i + 1)];
+        _Q[sz * j + i] = QQ[(2 * sz) * j + (2 * i + 0)];
+      }
+      sz /= 2, k *= 2;
+    }
+    vector<ll> p(k);
+    rep(i, k) p[i] = _P[2 * i];
+    reverse(ALL(p));
+    p.resize(m + 1);
+    return p;
+  }
+  Poly comp_inv() { // (*this)[0] == 0, (*this)[1] != 0
+    Poly X(*this, n()), wt(n(), 0);
+    ll ic = ntt.minv((*this)[1]);
+    for (auto& x: X) x = x * ic % P;
+    wt[n() - 1] = 1;
+    vector<ll> A = X.power_proj(wt, n() - 1);
+    Poly g(n() - 1);
+    rep1(i, n() - 1) g[n() - 1 - i] = (n() - 1) * A[i] % P * ntt.minv(i) % P;
+    g = g.Pow(ntt.minv(P - n() + 1));
+    g.insert(g.begin(), 0);
+    ll p = 1;
+    rep(i, g.n()) g[i] = g[i] * p % P, p = p * ic % P;
+    return g;
+  }
+  Poly TMul(const Poly &rhs) const { // this[i] - rhs[j] = k
+    return Poly(*this).irev().Mul(rhs).isz(n()).irev();
+  }
+  Poly composition(Poly g) { // f(g(x)), 1e5 3s, MAXN >= 8n
+    auto rec = [&](auto &rec, int n, int k, Poly Q) -> Poly {
+      if (n == 1) {
+        Poly p(2 * k);
+        irev();
+        fi(0, k) p[2 * i] = (*this)[i];
+        return p;
+      }
+      Poly R(2 * n * k);
+      fi(0, 2 * n * k) R[i] = (i % 2 == 0 ? Q[i] : (P - Q[i]) % P);
+      Poly QQ = Q.Mul(R).isz(4 * n * k);
+      fi(0, 2 * n * k) {
+        QQ[2 * n * k + i] += Q[i] + R[i];
+        QQ[2 * n * k + i] %= P;
+      }
+      Poly nxt_Q(2 * n * k);
+      for(int j = 0; j < 2 * k; j++) fi(0, n / 2) {
+        nxt_Q[n * j + i] = QQ[(2 * n) * j + (2 * i + 0)];
+      }
+      Poly nxt_p = rec(rec, n / 2, k * 2, nxt_Q);
+      Poly pq(4 * n * k);
+      for(int j = 0; j < 2 * k; j++) fi(0, n / 2) {
+        pq[(2 * n) * j + (2 * i + 1)] += nxt_p[n * j + i];
+        pq[(2 * n) * j + (2 * i + 1)] %= P;
+      }
+      Poly p(2 * n * k);
+      fi(0, 2 * n * k) p[i] = (p[i] + pq[2 * n * k + i]) % P;
+      pq.pop_back();
+      Poly x = pq.TMul(R);
+      fi(0, 2 * n * k) p[i] = (p[i] + x[i]) % P;
+      return p;
+    };
+    int sz = 1;
+    while(sz < n() || sz < g.n()) sz <<= 1;
+    return isz(sz), rec(rec, sz, 1, g.imul(P-1).isz(2 * sz)).isz(sz).irev();
+  }
 };
 #undef fi
 using Poly_t = Poly<131072 * 2, 998244353, 3>;
