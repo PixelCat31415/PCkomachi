@@ -21,8 +21,11 @@ struct EdgeBCC {
     low[v] = dep[v] = ~pa ? dep[pa] + 1 : 0;
     par[v] = pa;
     stk.push_back(v);
-    for (int u : adj[v]) if (u != pa) {
-      if (dep[u] == -1) {
+    bool visp = false;
+    for (int u : adj[v]) {
+      if (!visp && u == pa) {
+        visp = true;
+      } else if (dep[u] == -1) {
         dfs(u, v);
         low[v] = min(low[v], low[u]);
       } else {
