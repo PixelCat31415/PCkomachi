@@ -44,5 +44,5 @@ struct Dominator_tree {
     for (int i = 1; i < id; ++i) res[rev[i]] = rev[dom[i]];
     res[s] = s;
     dom = res;
-  }
+  }  // dom[]: parent on dom. tree, -1 if not reachable
 };
