@@ -1,68 +1,29 @@
-long long query(int l, int r);
-struct SMAWK {
-  // Condition:
-  // If M[1][0] < M[1][1] then M[0][0] < M[0][1]
-  // If M[1][0] == M[1][1] then M[0][0] <= M[0][1]
-  // For all i, find r_i s.t. M[i][r_i] is maximum || minimum.
-  int ans[N], tmp[N];
-  void interpolate(vector <int> l, vector <int> r) {
-    int n = l.size(), m = r.size();
-    vector <int> nl;
-    for (int i = 1; i < n; i += 2) {
-      nl.push_back(l[i]);
+// For all 2x2 submatrix:
+// If M[1][0] < M[1][1], M[0][0] < M[0][1]
+// If M[1][0] == M[1][1], M[0][0] <= M[0][1]
+// M[i][ans_i] is the best value in the i-th row
+// select(int r, int u, int v) return true if f(r, v) is better than f(r, u)
+vector<int> smawk(int N, int M, auto &&select) {
+  auto dc = [&](auto self, const vector<int> &r, const vector<int> &c) {
+    if (r.empty()) return vector<int>{};
+    const int n = SZ(r); vector<int> ans(n), nr, nc;
+    for (int i : c) {
+      while (!nc.empty() &&
+          select(r[nc.size() - 1], nc.back(), i))
+        nc.pop_back();
+      if (int(nc.size()) < n) nc.push_back(i);
     }
-    run(nl, r);
-    for (int i = 1, j = 0; i < n; i += 2) {
-      while (j < m && r[j] < ans[l[i]])
-        j++;
-      assert(j < m && ans[l[i]] == r[j]);
-      tmp[l[i]] = j;
+    for (int i = 1; i < n; i += 2) nr.push_back(r[i]);
+    const auto na = self(self, nr, nc);
+    for (int i = 1; i < n; i += 2) ans[i] = na[i >> 1];
+    for (int i = 0, j = 0; i < n; i += 2) {
+      ans[i] = nc[j];
+      const int end = i + 1 == n ? nc.back() : ans[i + 1];
+      while (nc[j] != end)
+        if (select(r[i], ans[i], nc[++j])) ans[i] = nc[j];
     }
-    for (int i = 0; i < n; i += 2) {
-      int curl = 0, curr = m - 1;
-      if (i)
-        curl = tmp[l[i - 1]];
-      if (i + 1 < n)
-        curr = tmp[l[i + 1]];
-      long long res = query(l[i], r[curl]);
-      ans[l[i]] = r[curl];
-      for (int j = curl + 1; j <= curr; ++j) {
-        lli nxt = query(l[i], r[j]);
-        if (res < nxt)
-          res = nxt, ans[l[i]] = r[j];
-      }
-    }
-  }
-  void reduce(vector <int> l, vector <int> r) {
-    int n = l.size(), m = r.size();
-    vector <int> nr;
-    for (int j : r) {
-      while (!nr.empty()) {
-        int i = nr.size() - 1;
-        if (query(l[i], nr.back()) <= query(l[i], j))
-          nr.pop_back();
-        else
-          break;
-      }
-      if (nr.size() < n)
-        nr.push_back(j);
-    }
-    run(l, nr);
-  }
-  void run(vector <int> l, vector <int> r) {
-    int n = l.size(), m = r.size();
-    if (max(n, m) <= 2) {
-      for (int i : l) {
-        ans[i] = r[0];
-        if (m > 1) {
-          if (query(i, r[0]) < query(i, r[1]))
-            ans[i] = r[1];
-        }
-      }
-    } else if (n >= m) {
-      interpolate(l, r);
-    } else {
-      reduce(l, r);
-    }
-  }
-};
+    return ans;
+  };
+  vector<int> R(N), C(M); iota(iter(R), 0), iota(iter(C), 0);
+  return dc(dc, R, C);
+}
