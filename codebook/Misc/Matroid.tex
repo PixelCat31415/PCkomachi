@@ -1,0 +1,67 @@
+% From IOIC 2021,2022
+%我們稱一個二元組 $M = (E, \mathcal{I})$ 為一個擬陣，
+%其中 $\mathcal{I} \subseteq 2^E$ 為 $E$ 的子集所形成的\textbf{非空}集合，若：
+%
+%\begin{itemize}
+%    \item 若 $S \in \mathcal{I}$ 以及 $S^\prime \subsetneq S$，則
+%        $S^\prime \in \mathcal{I}$
+%    \item 對於 $S_1, S_2 \in \mathcal{I}$ 滿足 $|S_1| < |S_2|$，存在
+%        $e \in S_2 \setminus S_1$ 使得 $S_1 \cup \{e\} \in \mathcal{I}$
+%\end{itemize}
+%
+%除此之外，我們有以下的定義：
+%
+%\begin{itemize}
+%    \item 位於 $\mathcal{I}$ 中的集合我們稱之為獨立集（independent set），反之不在
+%        $\mathcal{I}$ 中的我們稱為相依集（dependent set）
+%    \item 極大的獨立集為基底（base）、極小的相依集為迴路（circuit）
+%    \item 一個集合 $Y$ 的秩（rank）$r(Y)$ 為該集合中最大的獨立子集，也就是
+%        $r(Y) = \max\{|X| \mid X \subseteq Y \text{ 且 } X \in \mathcal{I} \}$
+%\end{itemize}
+%
+%性質：
+%\begin{enumerate}
+%    \item $X \subseteq Y \land Y \in \mathcal I \implies X \in \mathcal I$
+%    \item $X \subseteq Y \land X \notin \mathcal I \implies Y \notin \mathcal I$
+%    \item 若 $B$ 與 $B'$ 皆是基底且 $B \subseteq B'$，則 $B=B'$\\
+%          若 $C$ 與 $C'$ 皆是迴路且 $C \subseteq C'$，則 $C=C'$
+%    \item $e \in E \land X \subseteq E \implies r(X) \leq r(X \cup \{e\}) \leq r(X) + 1$ i.e. 加入一個元素後秩不會降底，最多增加 1
+%    \item $\forall Y \subseteq E, \exists X \subseteq Y, r(X)=\lvert X \rvert = r(Y)$
+%\end{enumerate}
+%
+%一些等價的性質：
+%\begin{enumerate}
+%    \item 對於所有 $X \subseteq E$，$X$ 的極大獨立子集都有相同的大小
+%    \item 對於 $B_1,B_2 \in \mathcal B \land B_1 \neq B_2$，
+%        對於所有 $e_1 \in B_1 \setminus B_2$，
+%        存在 $e_2 \in B_2 \setminus B_1$ 使得 $(B_1 \setminus \{e_1\}) \cup \{e_2\} \in \mathcal B$
+%    \item 對於 $X,Y \in \mathcal I$ 且 $\lvert X \rvert < \lvert Y \rvert$，存在 $e \in Y \setminus X$ 使得 $X \cup \{e\} \in \mathcal B$
+%    \item 如果 $r(X \cup \{e_1\}) = r(X \cup \{e_2\}) = r(X)$，則 $r(X \cup \{e_1,e_2\}) = r(X)$。
+%        如果 $r(X \cup \{e\}) = r(X)$ 對於所有 $e \in E'$ 都成立，則 $r(X \cup E') = r(X)$。
+%\end{enumerate}
+
+$M=(E,\mathcal{I})$, where $\mathcal{I} \subseteq 2^E$ is nonempty, is a matroid if:
+\begin{itemize}
+    \item If $S \in \mathcal{I}$ and $S^\prime \subsetneq S$, then $S^\prime \in \mathcal{I}$.
+    \item For $S_1,S_2 \in \mathcal{I}$ s.t. $\lvert S_1 \rvert < \lvert S_2 \rvert$,
+        there exists $e \in S_2 \setminus S_1$ s.t. $S_1 \cup \{e\} \in \mathcal{I}$.
+\end{itemize}
+
+Matroid intersection:
+
+Start from $S = \emptyset$. In each iteration, let 
+%\vspace{-0.5em}
+\begin{itemize}
+    %\itemsep-0.5em
+    \item $Y_1 = \{x \not\in S \mid S \cup \{x\} \in \mathcal{I}_1 \}$
+    \item $Y_2 = \{x \not\in S \mid S \cup \{x\} \in \mathcal{I}_2 \}$
+\end{itemize}
+If there exists $x \in Y_1 \cap Y_2$, insert $x$ into $S$. Otherwise for each $x \in S, y \not\in S$, create edges
+%\vspace{-0.5em}
+\begin{itemize}
+    %\itemsep-0.5em
+    \item $x \to y$ if $S - \{x\} \cup \{y\} \in \mathcal{I}_1$.
+    \item $y \to x$ if $S - \{x\} \cup \{y\} \in \mathcal{I}_2$.
+\end{itemize}
+Find a \textit{shortest} path (with BFS) starting from a vertex in $Y_1$ and ending at a vertex in $Y_2$ which doesn't pass through any other vertices in $Y_2$, and alternate the path. The size of $S$ will be incremented by 1 in each iteration. For the weighted case, assign weight $w(x)$ to vertex $x$ if $x \in S$ and $-w(x)$ if $x \not\in S$. Find the path with the minimum number of edges among all minimum length paths and alternate it.
+
