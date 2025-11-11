@@ -1,0 +1,46 @@
+% From IOIC 2021
+\subsubsection{Ordinary Generating Function}
+
+\begin{tabular}{rl|rl}
+    $A(rx)$              & $r^na_n$ &
+    $A(x) + B(x)$        & $a_n + b_n$ \\
+    $A(x)B(x)$           & $\sum\limits_{i = 0}^n a_ib_{n - i}$ &
+    $A(x)^k$             & $\sum\limits_{i_1 + \ldots + i_k = n} a_{i_1} \ldots a_{i_k}$ \\
+    $xA(x)'$             & $na_n$ &
+    $\frac{A(x)}{1 - x}$ & $\sum\limits_{i = 0}^n a_i$ \\
+    $A(1) + x\frac{A(1) - A(x)}{1-x}$ & $\sum\limits_{i=n}^{\infty} a_i$
+\end{tabular}
+
+\begin{itemize}
+    \item $\frac{1}{1 - x} = 1 + x + x^2 + \ldots + x^n + \ldots$
+    \item $(1 + x)^a = \sum\limits_{n = 0}^{\infty} \binom{a}{n} x^n, \, \binom{a}{n} = \frac{a(a - 1)(a - 2) \ldots (a - n + 1)}{n!}$.
+\end{itemize}
+
+\begin{itemize}
+	\item Catalan number: $f(x) = \frac{1 - \sqrt{1-4x}}{2x}$
+\end{itemize}
+
+\subsubsection{Exponential Generating Function}
+
+%\[\hat A(x) = \sum_{i=0}^\infty \frac{a_i}{i!} = a_0 + a_1x + \frac{a_2}{2!}x^2 + \frac{a_3}{3!}x^3 + \dots\]
+
+\begin{tabular}{rl}
+    $\hat A(x) + \hat B(x)$ & $c_n=a_n+b_n$ \\
+    $\hat A^{(k)}(x)$ & $c_n=a_{n+k}$ \\
+    $x\hat A(x)$ & $c_n=na_n$  \\
+    $\hat A(x)\hat B(x)$ & $c_n=\sum_{k=0}^n \binom{n}{i} a_kb_{n-k}$ \\
+    $\hat A(x)^k$ & $\sum\limits_{i_1+i_2+\dots+i_k=n} \binom{n}{i_1,i_2,\dots,i_k}a_ia_{i_2}\dots a_{i_k}$ \\
+\end{tabular}
+
+$\exp(A(x))$: 假設 $A(x)$ 是一個分量 (component) 的生成函數，那 $\hat C(x)$ 是將 $n$ 個有編號的東西分成若干個分量的指數生成函數
+
+Lagrange's Inversion Formula
+
+如果 $F$ 跟 $G$ 互反，則有 $F(0),G(0) = 0$, $F'(0), G'(0) \neq 0$。若 $H$ 為任意 FPS，則
+
+\[ n [x^n] G(x) = [x^{n-1}]\frac{1}{(F(x)/x)^{n}}\]
+\[ n [x^n] H(G(x)) = [x^{n-1}] H'(x) \frac{1}{(F(x)/x)^{n}}\]
+
+Newton's iteration
+
+如果有 $F(G(x)) = 0$ 已知 $F$ 則可以用 $G_2N(x) = G_N(x) - F(G_N(x)) / \frac{\partial F}{\partial P}(G_N(x))$ 求出 $G$ 的前 $N$ 項，其中 $P$ 代表多項式。

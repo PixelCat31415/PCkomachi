@@ -161,7 +161,7 @@ struct Poly : vector<ll> { // coefficients in [0, P)
     fi(0, n()) A[i] = C[n() + i] * in[i] % P;
     return A;
   }
-  // sum_j[x^j]f^i for i=0,1,...,m
+  // sum_j w_j[x^j]f^i for i=0,1,...,m
   vector<ll> power_proj(Poly wt, int m) { // 1e5 2s, MAXN >= 4 * n()
     // wt.size() = n(), (*this[0]) == 0
     int sz = 1;
