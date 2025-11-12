@@ -1,33 +1,36 @@
-struct PAM {
-  int ch[N][26], cnt[N], fail[N], len[N], sz;
-  string s;
-  // 0 -> even root, 1 -> odd root
-  PAM () {}
-  void init(string s) {
-    sz = 0, extend(), extend();
-    len[0] = 0, fail[0] = 1, len[1] = -1;
-    int lst = 1;
-    for (int i = 0; i < s.length(); ++i) {
-      while (s[i - len[lst] - 1] != s[i])
-        lst = fail[lst];
-      if (!ch[lst][s[i] - 'a'])  {
-        int idx = extend();
-        len[idx] = len[lst] + 2;
-        int now = fail[lst];
-        while (s[i - len[now] - 1] != s[i])
-          now = fail[now];
-        fail[idx] = ch[now][s[i] - 'a'];
-        ch[lst][s[i] - 'a'] = idx;
-      }
-      lst = ch[lst][s[i] - 'a'], cnt[lst]++;
+struct PalindromicTree {
+  struct node {
+    int nxt[26], fail, len; // num = depth of fail link
+    int cnt, num; // cnt = occur, num = #pal_suffix of this node
+    node(int l = 0) : nxt{},fail(0),len(l),cnt(0),num(0) {}
+  };
+  vector<node> st; vector<int> s; int last, n;
+  void init() {
+    st.clear(); s.clear(); last = 1; n = 0;
+    st.pb(0); st.pb(-1);
+    st[0].fail = 1; s.pb(-1);
+  }
+  int getFail(int x) {
+    while (s[n - st[x].len - 1] != s[n]) x = st[x].fail;
+    return x;
+  }
+  void add(int c) {
+    s.pb(c -= 'a'); ++n;
+    int cur = getFail(last);
+    if (!st[cur].nxt[c]) {
+      int now = SZ(st);
+      st.pb(st[cur].len + 2);
+      st[now].fail = st[getFail(st[cur].fail)].nxt[c];
+      st[cur].nxt[c] = now;
+      st[now].num = st[st[now].fail].num + 1;
+    }
+    last = st[cur].nxt[c]; ++st[last].cnt;
+  }
+  void dpcnt() {
+    for(int i = SZ(st) - 1; i >= 0; i--){
+      auto nd = st[i];
+      st[nd.fail].cnt += nd.cnt;
     }
   }
-  void build_count() {
-    for (int i = sz - 1; i > 1; --i)
-      cnt[fail[i]] += cnt[i];
-  }
-  int extend() {
-    fill(ch[sz], ch[sz] + 26, 0), sz++;
-    return sz - 1;
-  }
+  int size() { return (int)st.size() - 2; }
 };
