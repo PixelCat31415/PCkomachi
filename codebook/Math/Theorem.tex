@@ -72,4 +72,6 @@ A sequence $(a_1,b_1),\ldots,(a_n,b_n)$ of nonnegative integer pairs with $a_1\g
   \item $t_iM_i \equiv 1 \pmod {m_i}$
   \item $x = \sum a_it_iM_i \pmod M$
 \end{itemize}
+
+\item Green Hackenbush: Run BCC(bridge), each BCC has grundy value $g_v = |E| \bmod 2$ (the grundy value remains unchanged if we identify a circuit as a node). Run DFS with root \texttt{ground} and $g_v ^= (g_h + 1)$ for vertex $v$ and its child $h$.  
 \end{itemize}
