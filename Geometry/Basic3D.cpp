@@ -21,7 +21,7 @@ double area2(Point a, Point b, Point c)
 { return abs(cross3(a, b, c)); }
 double volume(Point a, Point b, Point c, Point d)
 { return cross3(a, b, c) * (d - a); }
-Point masscenter(Point a, Point b, Point c, Point d)
+Point Masscenter(Point a, Point b, Point c, Point d)
 { return (a + b + c + d) / 4; }
 PT proj(Point a, Point b, Point c, Point u) {
 // proj. u to the plane of a, b, and c

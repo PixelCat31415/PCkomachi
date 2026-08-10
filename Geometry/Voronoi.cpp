@@ -1,7 +1,7 @@
 // (int) needs delaunay triangulation
-// all coord. is even, you may want to call halfPlaneInter after then
+// all coord is even, may call HalfPlaneInter after
 vector<vector<Line>> vec;
-void build_voronoi_line(int n, PT *arr) {
+void BuildVoronoiLine(int n, PT *arr) {
   tool.init(n, arr); // Delaunay
   vec.clear(), vec.resize(n);
   for (int i = 0; i < n; ++i)

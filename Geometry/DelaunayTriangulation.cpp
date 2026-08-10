@@ -5,8 +5,8 @@ const int N = 0; // set per problem constraints
 Given a sets of points on 2D plane, find a
 triangulation such that no points will strictly
 inside circumcircle of any triangle.
-find : return a triangle contain given point
-add_point : add a point into triangulation
+	find : return a triangle contain given point
+	add_point : add a point into triangulation
 A Triangle is in triangulation iff. its has_chd is 0.
 Region of triangle u: iterate each u.edge[i].tri,
 each points are u.p[(i+1)%3], u.p[(i+2)%3]
@@ -87,7 +87,7 @@ struct Trig { // Triangulation
     Tri* trj = tri->edge[pi].tri;
     int pj = tri->edge[pi].side;
     if (!trj) return;
-    if (!in_cc(tri->p[0], tri->p[1],
+    if (!InCir(tri->p[0], tri->p[1],
         tri->p[2], trj->p[pj])) return;
     /* flip edge between tri,trj */
     Tri* trk = new(tris++) Tri(tri->p[(pi + 1) % 3],
@@ -118,7 +118,7 @@ void go(Tri* now) { // store all tri into triang
   for (int i = 0; i < now->num_chd(); ++i)
     go(now->chd[i]);
 }
-void build(int n, PT* ps) { // build triangulation
+void BuildDelaunay(int n, PT* ps) {
   tris = pool; triang.clear(); vst.clear();
   shuffle(ps, ps + n, mt19937(clock()));
   Trig tri; // the triangulation structure

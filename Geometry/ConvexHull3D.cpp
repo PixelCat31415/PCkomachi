@@ -26,7 +26,7 @@ auto preprocess(auto pts) {
   return tuple{a, b, c, id};
 }
 // return the faces with pts indexes
-vector<Face> convex_hull_3D(vector<Point> pts) {
+vector<Face> ConvexHull3D(vector<Point> pts) {
   int n = sz(pts);
   if (n <= 3) return {}; // be careful about edge case
   vector<Face> now;

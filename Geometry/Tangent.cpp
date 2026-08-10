@@ -7,7 +7,7 @@ PT ccw(PT p, double t) {
     p.x * sin(t) + p.y * cos(t)
   );
 }
-vector<Line> tangent(Cir c, PT p) {
+vector<Line> Tangent(Cir c, PT p) {
   vector<Line> z;
   double d = abs(p - c.o);
   if (sign(d - c.r) == 0) {
@@ -22,8 +22,8 @@ vector<Line> tangent(Cir c, PT p) {
   }
   return z;
 }
-vector <Line> tangent(Cir c1, Cir c2, int sign1) {
-  // sign1 = 1 for outer tang, -1 for inter tang
+vector <Line> Tangent(Cir c1, Cir c2, int sign1) {
+  // sign1 = 1 for outer, -1 for inter
   vector <Line> ret;
   double d_sq = abs2(c1.o - c2.o);
   if (sign(d_sq) == 0) return ret;

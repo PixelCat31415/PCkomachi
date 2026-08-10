@@ -55,7 +55,7 @@ struct SweepLine {
     auto nxt = next(its[idx]);
     if (nxt == sweep.end() || !slope_cmp(idx, *nxt))
       return;
-    auto t = intersect(base[idx].a, base[idx].b,
+    auto t = GetInter(base[idx].a, base[idx].b,
       base[*nxt].a, base[*nxt].b).x;
     if (t + eps < curTime ||
         t >= min(base[idx].b.x, base[*nxt].b.x))

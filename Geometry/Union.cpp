@@ -47,7 +47,7 @@ double CircleUnionArea(vector<Cir> c) {
   return a * 0.5;
 }
 // Union of Polygons
-double polyUnion(vector<vector<PT>> poly) {
+double PolyUnion(vector<vector<PT>> poly) {
   int n = sz(poly);
   double ans = 0;
   auto solve = [&](PT a, PT b, int cid) {
@@ -64,7 +64,7 @@ double polyUnion(vector<vector<PT>> poly) {
           int ok1 = ori(c, a, b) == 1;
           int ok2 = ori(d, a, b) == 1;
           if (ok1 ^ ok2)
-            event.emplace_back(intersect(a, b, c, d),
+            event.emplace_back(GetInter(a, b, c, d),
               ok1 ? 1 : -1);
         } else if (ori(c, a, b) == 0 &&
             sign((a - b) * (c - d)) > 0 && i <= cid) {

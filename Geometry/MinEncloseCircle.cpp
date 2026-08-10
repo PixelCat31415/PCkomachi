@@ -2,12 +2,12 @@
 // p must be nonempty
 PT circenter(PT a, PT b, PT c) {
   PT ab = (a + b) / 2, ac = (a + c) / 2;
-  return intersect(
+  return GetInter(
     ab, ab + ccw90(b - a),
     ac, ac + ccw90(c - a)
   );
 }
-Cir min_enclosing(vector<PT> &p) {
+Cir MinEnclosing(vector<PT> &p) {
   shuffle(p.begin(), p.end(), mt19937(clock()));
   double r = 0;
   PT cent = p[0];

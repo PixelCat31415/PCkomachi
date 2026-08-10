@@ -54,15 +54,14 @@ struct Delaunay { // 0-base
       for (int t = 0; t < 2; ++t)
           for (auto it : head[nw[t]])
               if (ori(pt[0], pt[1], p[it.id]) > 0 &&
-                  (ch == -1 || in_cc(pt[0], pt[1],
+            (ch == -1 || InCir(pt[0], pt[1],
                     p[ch], p[it.id])))
                   ch = it.id, sd = t;
       if (ch == -1) break; // upper common tangent
       for (auto it = head[nw[sd]].begin();
            it != head[nw[sd]].end(); )
-        // change seg_sect to strict intersection
-        if (seg_sect(pt[sd], p[it->id],
-                     pt[sd ^ 1], p[ch]))
+        if (HasStrictInter(pt[sd], p[it->id],
+            pt[sd ^ 1], p[ch]))
           head[it->id].erase(it->twin),
           head[nw[sd]].erase(it++);
         else ++it;

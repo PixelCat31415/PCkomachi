@@ -47,7 +47,7 @@ double _area(PT pa, PT pb, double r) {
   } else S = .5 * sin(C) * a * b;
   return S;
 }
-double area_poly_circle(vector<PT> poly, PT O,
+double AreaPolyCircle(vector<PT> poly, PT O,
                         double r) {
   double S = 0; int n = sz(poly);
   for (int i = 0; i < n; ++i)
