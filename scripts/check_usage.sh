@@ -7,7 +7,7 @@ fi
 
 check_file(){
     file=$1
-    if [[ "$file" = "./content.tex" ]] || [[ "$file" = "./main.tex" ]]; then
+    if [[ "$file" = "./content.tex" ]] || [[ "$file" = "./codebook.tex" ]]; then
         return
     fi
     cat content.tex | grep "${file:2}" > /dev/null

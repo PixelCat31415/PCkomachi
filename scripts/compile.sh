@@ -2,7 +2,7 @@
 
 set -e
 
-if [[ ! -f main.tex ]]; then
+if [[ ! -f codebook.tex ]]; then
     echo "Please execute the script at PCkomachi/"
     exit 1
 fi
@@ -16,8 +16,8 @@ printf "${BLUE}Check indentations$NC\n"
 scripts/check_indent.sh -b
 printf "${BLUE}Process partial hash$NC\n"
 scripts/process_hash_all.sh
-printf "${BLUE}Compile main.tex...$NC\n"
-texfot latexmk -xelatex main.tex --shell-escape
+printf "${BLUE}Compile codebook.tex...$NC\n"
+texfot latexmk -xelatex codebook.tex --shell-escape
 printf "${BLUE}Clean$NC\n"
 scripts/process_hash_clear.sh
 printf "${BLUE}Done$NC\n"

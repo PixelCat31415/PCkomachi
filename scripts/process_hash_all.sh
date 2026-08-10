@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ ! -f main.tex ]]; then
+if [[ ! -f codebook.tex ]]; then
     echo "Please execute the script at PCkomachi/"
     exit 1
 fi
