@@ -44,6 +44,23 @@ jobs:
         with:
           commit_message: build from ${{ github.ref_name }} - ${{ github.sha }}
           file_pattern: codebook.pdf
+      - name: Get page count
+        id: pages
+        run: |
+          MAX=25
+          COUNT=$(sed -n 's/.*@abspage@last{\([0-9]*\)}.*/\1/p' main.aux | tail -1)
+          if [ -z "$COUNT" ]; then
+            echo "::warning::Could not determine page count"
+            COUNT="?"
+          else
+            echo "Pages: $COUNT / $MAX"
+            echo "Codebook has **$COUNT** pages (limit $MAX)" >> $GITHUB_STEP_SUMMARY
+            if [ "$COUNT" -gt "$MAX" ]; then
+              echo "::warning::Page limit exceeded: $COUNT pages (limit $MAX)"
+            fi
+          fi
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "max=$MAX" >> $GITHUB_OUTPUT
   notify:
     needs: compile
     if: always()
@@ -56,26 +73,22 @@ jobs:
           MAX: ${{ needs.compile.outputs.max }}
           WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
-          echo "test" | curl -sS -f -X POST -d @- "$WEBHOOK"
-
-          return 0 ;
-
           case "$RESULT" in
-            success)   COLOR=3066993;  TITLE="✅ Codebook 編譯成功" ;;
-            failure)   COLOR=15158332; TITLE="❌ Codebook 編譯失敗" ;;
-            cancelled) COLOR=9807270;  TITLE="⚪ Codebook 編譯已取消" ;;
-            *)         COLOR=9807270;  TITLE="⚪ Codebook 編譯已略過" ;;
+            success)   COLOR=3066993;  TITLE="Codebook build succeeded" ;;
+            failure)   COLOR=15158332; TITLE="Codebook build failed" ;;
+            cancelled) COLOR=9807270;  TITLE="Codebook build cancelled" ;;
+            *)         COLOR=9807270;  TITLE="Codebook build skipped" ;;
           esac
 
           if [ -n "$PAGES" ] && [ "$PAGES" != "?" ]; then
-            PAGE_LINE="📄 共 **$PAGES** 頁 / 上限 $MAX"
+            PAGE_LINE="Pages: **$PAGES** / $MAX"
             if [ "$PAGES" -gt "$MAX" ]; then
-              PAGE_LINE="⚠️ 共 **$PAGES** 頁，已超過上限 $MAX"
+              PAGE_LINE="Pages: **$PAGES** / $MAX (over limit)"
             elif [ "$PAGES" -gt "$((MAX - 3))" ]; then
-              PAGE_LINE="⚠️ 共 **$PAGES** 頁，剩 $((MAX - PAGES)) 頁空間"
+              PAGE_LINE="Pages: **$PAGES** / $MAX ($((MAX - PAGES)) left)"
             fi
           else
-            PAGE_LINE="📄 頁數：未知"
+            PAGE_LINE="Pages: unknown"
           fi
 
           RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
