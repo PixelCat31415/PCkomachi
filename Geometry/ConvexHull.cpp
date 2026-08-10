@@ -1,15 +1,18 @@
-#define sz(x) ((int)x.size())
+// requires sz(pt) >= 2 & distinct points
+// points on edges are excluded
 vector<PT> ConvexHull(vector<PT> pt) {
   int n = sz(pt);
-  sort(pt.begin(), pt.end(), [&](PT a, PT b) { return make_pair(a.x, a.y) < make_pair(b.x, b.y); });
-  vector<PT> ans = {pt[0]};
-  rep(t, 2) {
+  sort(iter(pt), [&](PT a, PT b) {
+    return pll{a.x, a.y} < pll{b.x, b.y}; });
+  vector<PT> ans{pt[0]};
+  For(t, 0, 1) {
     int m = sz(ans);
-    rep1(i, n - 1) {
-      while (sz(ans) > m && ori(ans[sz(ans) - 2], ans.back(), pt[i]) <= 0) ans.pop_back();
-      ans.pb(pt[i]);
+    For(i, 1, n - 1) {
+      while (sz(ans) > m && ori(ans[sz(ans) - 2],
+        ans.back(), pt[i]) <= 0) ans.pop_back();
+      ans.push_back(pt[i]);
     }
-    reverse(pt.begin(), pt.end());
+    reverse(iter(pt));
   }
   if (sz(ans) > 1) ans.pop_back();
   return ans;
