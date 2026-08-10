@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Probe
-        run: which pdfinfo qpdf python3 pip3 curl || true
       - name: Check unused files
         run: |
           chmod +x scripts/check_usage.sh
