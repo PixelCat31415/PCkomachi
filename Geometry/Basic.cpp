@@ -1,17 +1,14 @@
-using T = long double;  // int
-const double eps=1e-9;  // 1
-T operator*(PT a,PT b){return a.x*b.x+a.y*b.y;}
-T operator^(PT a,PT b){return a.x*b.y-a.y*b.x;}
-T abs2(PT a){return a*a;}
-double abs(PT a){return sqrt(a*a);}
-int sign(T a){return abs(a)<eps?0:a>0?1:-1;}
-int ori(PT a,PT b,PT c){return sign((b-a)^(c-a));}
-bool btw(PT a,PT b,PT c){  //is C between AB
-  return ori(a,b,c)?0:sign((a-c)*(b-c))<=0;}
-PT proj(PT a,PT b,PT c){  //ac projection on ab
-  return (b-a)*((c-a)*(b-a)/abs2(b-a));}
-double dist(PT a,PT b,PT c){  //distance from C to AB
-  return abs((c-a)^(b-a))/abs(b-a);}
-PT ccw90(PT p){return PT(-p.y, p.x);}
-struct Line{PT a,b;};
-struct Cir{PT o;double r;};
+struct PT { int x, y; };
+PT operator+(PT p1, PT p2)
+{ return PT{p1.x + p2.x, p1.y + p2.y}; }
+PT operator-(PT p1, PT p2)
+{ return PT{p1.x - p2.x, p1.y - p2.y}; }
+int operator*(PT p1, PT p2)
+{ return p1.x * p2.x + p1.y * p2.y; }
+int operator^(PT p1, PT p2)
+{ return p1.x * p2.y - p1.y * p2.x; }
+int sign(int a) { return (a > 0) - (a < 0); }
+int ori(PT a, PT b, PT c) { // is C to the left of A->B
+  return sign((b-a)^(c-a)); }
+bool btw(PT a, PT b, PT c) { // is C between AB
+  return !ori(a, b, c) && sign((a-c)*(b-c)) <= 0; }
