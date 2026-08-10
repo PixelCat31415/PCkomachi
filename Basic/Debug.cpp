@@ -1,19 +1,20 @@
-#ifdef PCK
-template <typename T>
-ostream& operator << (ostream &o, vector <T> vec) {
-    o << "{"; int f = 0;
-    for (T i : vec) o << (f++ ? " " : "") << i;
-    return o << "}"; }
-void bug__(int c, auto ...a) {
-    cerr << "\e[1;" << c << "m";
-    (..., (cerr << a << " "));
-    cerr << "\e[0m" << endl; }
-#define bug_(c, x...) bug__(c, __LINE__, "[" + string(#x) + "]", x)
-#define bug(x...) bug_(32, x)
-#define bugv(x...) bug_(36, vector(x))
-#define safe bug_(33, "safe")
+#ifdef zisk
+void _debug() { cerr << "\e[0m\n"; }
+template<class T> void _d(T &&x) {
+  if constexpr (ranges::range<T> &&
+      !is_convertible_v<T, string_view>) {
+    cerr << "{ "; for (auto &&i:x) _d(i); cerr << "} ";
+  } else if constexpr (requires { get<0>(x); }) {
+    cerr << "( ";
+    apply([](auto &&...a){ (_d(a), ...); }, x);
+    cerr << ") ";
+  } else cerr << x << " ";
+}  // ranges::subrange(l, r)
+void _debug(auto&&... a) {
+    cerr << "\e[1;33m"; (_d(a), ...); _debug(); }
+#define debug(...) _debug(#__VA_ARGS__, ":", __VA_ARGS__)
+#define safe debug(__PRETTY_FUNCTION__,__LINE__,"safe")
 #else
-#define bug(x...) void(0)
-#define bugv(x...) void(0)
-#define safe void(0)
+#define safe void()
+#define debug(...) void()
 #endif
