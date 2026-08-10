@@ -32,7 +32,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: build
+          ref: codebook
       - name: Copy PDF
         run: cp /root/codebook.pdf .
       - name: Set safe directory
