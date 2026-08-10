@@ -85,8 +85,7 @@ jobs:
             PAGE_LINE="Pages: **$PAGES** / $MAX"
             if [ "$PAGES" -gt "$MAX" ]; then
               PAGE_LINE="Pages: **$PAGES** / $MAX (over limit)"
-            elif [ "$PAGES" -gt "$((MAX - 3))" ]; then
-              PAGE_LINE="Pages: **$PAGES** / $MAX ($((MAX - PAGES)) left)"
+              [ "$RESULT" = "success" ] && COLOR=15105570
             fi
           else
             PAGE_LINE="Pages: unknown"
