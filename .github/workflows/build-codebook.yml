@@ -31,6 +31,23 @@ jobs:
         run: |
           texfot latexmk -xelatex codebook.tex --shell-escape
           cp codebook.pdf /root/codebook.pdf
+      - name: Get page count
+        id: pages
+        run: |
+          MAX=25
+          COUNT=$(pdfinfo codebook.pdf | awk '/^Pages:/ {print $2}')
+          if [ -z "$COUNT" ]; then
+            echo "::warning::Could not determine page count"
+            COUNT="?"
+          else
+            echo "Pages: $COUNT / $MAX"
+            echo "Codebook has **$COUNT** pages (limit $MAX)" >> $GITHUB_STEP_SUMMARY
+            if [ "$COUNT" -gt "$MAX" ]; then
+              echo "::warning::Page limit exceeded: $COUNT pages (limit $MAX)"
+            fi
+          fi
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "max=$MAX" >> $GITHUB_OUTPUT
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -44,23 +61,6 @@ jobs:
         with:
           commit_message: build from ${{ github.ref_name }} - ${{ github.sha }}
           file_pattern: codebook.pdf
-      - name: Get page count
-        id: pages
-        run: |
-          MAX=25
-          COUNT=$(sed -n 's/.*@abspage@last{\([0-9]*\)}.*/\1/p' main.aux | tail -1)
-          if [ -z "$COUNT" ]; then
-            echo "::warning::Could not determine page count"
-            COUNT="?"
-          else
-            echo "Pages: $COUNT / $MAX"
-            echo "Codebook has **$COUNT** pages (limit $MAX)" >> $GITHUB_STEP_SUMMARY
-            if [ "$COUNT" -gt "$MAX" ]; then
-              echo "::warning::Page limit exceeded: $COUNT pages (limit $MAX)"
-            fi
-          fi
-          echo "count=$COUNT" >> $GITHUB_OUTPUT
-          echo "max=$MAX" >> $GITHUB_OUTPUT
   notify:
     needs: compile
     if: always()
