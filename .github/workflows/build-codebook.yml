@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Probe
+        run: which pdfinfo qpdf python3 pip3 curl || true
       - name: Check unused files
         run: |
           chmod +x scripts/check_usage.sh
@@ -42,4 +44,49 @@ jobs:
         with:
           commit_message: build from ${{ github.ref_name }} - ${{ github.sha }}
           file_pattern: codebook.pdf
+  notify:
+    needs: compile
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Discord
+        env:
+          RESULT: ${{ needs.compile.result }}
+          PAGES: ${{ needs.compile.outputs.pages }}
+          MAX: ${{ needs.compile.outputs.max }}
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          echo "test" | curl -sS -f -X POST -d @- "$WEBHOOK"
 
+          return 0 ;
+
+          case "$RESULT" in
+            success)   COLOR=3066993;  TITLE="✅ Codebook 編譯成功" ;;
+            failure)   COLOR=15158332; TITLE="❌ Codebook 編譯失敗" ;;
+            cancelled) COLOR=9807270;  TITLE="⚪ Codebook 編譯已取消" ;;
+            *)         COLOR=9807270;  TITLE="⚪ Codebook 編譯已略過" ;;
+          esac
+
+          if [ -n "$PAGES" ] && [ "$PAGES" != "?" ]; then
+            PAGE_LINE="📄 共 **$PAGES** 頁 / 上限 $MAX"
+            if [ "$PAGES" -gt "$MAX" ]; then
+              PAGE_LINE="⚠️ 共 **$PAGES** 頁，已超過上限 $MAX"
+            elif [ "$PAGES" -gt "$((MAX - 3))" ]; then
+              PAGE_LINE="⚠️ 共 **$PAGES** 頁，剩 $((MAX - PAGES)) 頁空間"
+            fi
+          else
+            PAGE_LINE="📄 頁數：未知"
+          fi
+
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          COMMIT_URL="${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+          SHORT_SHA="$(echo "${{ github.sha }}" | cut -c1-7)"
+          DESC="[\`$SHORT_SHA\`]($COMMIT_URL) by ${{ github.actor }}"$'\n'"$PAGE_LINE"
+
+          jq -n \
+            --arg title "$TITLE" \
+            --arg desc  "$DESC" \
+            --arg url   "$RUN_URL" \
+            --argjson color "$COLOR" \
+            '{embeds:[{title:$title, description:$desc, url:$url, color:$color}]}' \
+          | curl -sS -f -H "Content-Type: application/json" -X POST -d @- "$WEBHOOK"
