@@ -1,5 +1,4 @@
-// (FP)
-// circles have positive radii
+// (FP) circles have positive radii
 PT unit(PT p) { return p / abs(p); }
 PT ccw(PT p, double t) {
   return PT(
@@ -7,7 +6,7 @@ PT ccw(PT p, double t) {
     p.x * sin(t) + p.y * cos(t)
   );
 }
-vector<Line> Tangent(Cir c, PT p) {
+vector<Line> Tangent(Cir c, PT p) { // SCOPE HASH
   vector<Line> z;
   double d = abs(p - c.o);
   if (sign(d - c.r) == 0) {
@@ -22,7 +21,7 @@ vector<Line> Tangent(Cir c, PT p) {
   }
   return z;
 }
-vector <Line> Tangent(Cir c1, Cir c2, int sign1) {
+vector <Line> Tangent(Cir c1, Cir c2, int sign1) { // SCOPE HASH
   // sign1 = 1 for outer, -1 for inter
   vector <Line> ret;
   double d_sq = abs2(c1.o - c2.o);

@@ -1,3 +1,4 @@
+// == PART HASH ==
 struct PT {
   ll x, y;
   auto operator<=>(const PT&) const = default;
@@ -10,13 +11,13 @@ ll operator*(PT p1, PT p2)
 { return p1.x * p2.x + p1.y * p2.y; }
 ll operator^(PT p1, PT p2)
 { return p1.x * p2.y - p1.y * p2.x; }
-int sign(ll a) { return a==0?0:a>0?1:-1; }
+int sign(ll a) { return a == 0 ? 0 : a > 0 ? 1 : -1; }
 int ori(PT a, PT b, PT c) { // is C to the left of A->B
   return sign((b-a)^(c-a)); }
 bool btw(PT a, PT b, PT c) { // is C between AB
   return !ori(a, b, c) && sign((a-c)*(b-c)) <= 0; }
 PT ccw90(PT p) { return PT(-p.y, p.x); }
-
+// == PART HASH ==
 // change PT::x, y to FP type, replace sign()
 // needs PT+-PT, PT*/scalar
 const double EPS = 1e-9;
@@ -27,6 +28,5 @@ PT proj(PT a, PT b, PT c){ // C projected to AB
   return a+(b-a)*((c-a)*(b-a)/abs2(b-a));}
 double dist(PT a,PT b,PT c){ // distance from C to AB
   return abs((c-a)^(b-a))/abs(b-a);}
-
 // struct Line{ PT a, b; };
 // struct Cir{ PT o; double r; };

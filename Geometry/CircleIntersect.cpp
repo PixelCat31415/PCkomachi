@@ -1,6 +1,5 @@
-// (FP)
-// lines are nondegenerate; polygons have no zero edges
-vector<PT> CircleLineInter(Cir c, Line l) {
+// (FP) nondegenerate lines; polygon edges != 0
+vector<PT> CircleLineInter(Cir c, Line l) { // SCOPE HASH
   PT p = l.a + (l.b - l.a) *
     ((c.o - l.a) * (l.b - l.a)) /
     abs2(l.b - l.a);
@@ -12,7 +11,7 @@ vector<PT> CircleLineInter(Cir c, Line l) {
   PT h = (l.b - l.a) / abs(l.b - l.a) * sqrt(h2);
   return {p - h, p + h};
 }
-vector<PT> CirclesInter(Cir c1, Cir c2) {
+vector<PT> CirclesInter(Cir c1, Cir c2) { // SCOPE HASH
   double d2 = abs2(c1.o - c2.o), d = sqrt(d2);
   if (sign(d2) == 0) return {}; // concentric circles
   if (d < max(c1.r, c2.r) - min(c1.r, c2.r) ||
@@ -27,7 +26,7 @@ vector<PT> CirclesInter(Cir c1, Cir c2) {
   if (sign(v.x) == 0 && sign(v.y) == 0) return {u};
   return {u + v, u - v};
 }
-double _area(PT pa, PT pb, double r) {
+double _area(PT pa, PT pb, double r) { // SCOPE HASH
   if (abs(pa) < abs(pb)) swap(pa, pb);
   if (abs(pb) < EPS) return 0;
   double S, h, theta;
@@ -48,7 +47,7 @@ double _area(PT pa, PT pb, double r) {
   return S;
 }
 double AreaPolyCircle(vector<PT> poly, PT O,
-                        double r) {
+    double r) { // SCOPE HASH
   double S = 0; int n = sz(poly);
   for (int i = 0; i < n; ++i)
     S += _area(poly[i] - O, poly[(i + 1) % n] - O,

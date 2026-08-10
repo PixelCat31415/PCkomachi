@@ -1,7 +1,6 @@
 // (FP) needs segment intersect
 // circles are pairwise distinct; polygons are CCW
-vector<pair<double, double>>
-CoverSegment(Cir a, Cir b) {
+vector<pair<double, double>> CoverSegment(Cir a, Cir b) { // SCOPE HASH
   double d = abs(a.o - b.o);
   vector<pair<double, double>> res;
   if (sign(a.r + b.r - d) == 0);
@@ -23,7 +22,7 @@ CoverSegment(Cir a, Cir b) {
   }
   return res;
 }
-double CircleUnionArea(vector<Cir> c) {
+double CircleUnionArea(vector<Cir> c) { // SCOPE HASH
   int n = sz(c);
   double a = 0, w;
   for (int i = 0; w = 0, i < n; ++i) {
@@ -47,7 +46,7 @@ double CircleUnionArea(vector<Cir> c) {
   return a * 0.5;
 }
 // Union of Polygons
-double PolyUnion(vector<vector<PT>> poly) {
+double PolyUnion(vector<vector<PT>> poly) { // SCOPE HASH
   int n = sz(poly);
   double ans = 0;
   auto solve = [&](PT a, PT b, int cid) {

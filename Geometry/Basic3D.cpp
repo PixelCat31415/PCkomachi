@@ -1,5 +1,4 @@
-// (FP)
-// add Point*scalar when using proj
+// (FP) add Point*scalar for proj
 struct Point { double x = 0, y = 0, z = 0; };
 Point operator-(Point p1, Point p2)
 {return Point{p1.x-p2.x, p1.y-p2.y, p1.z-p2.z};}
