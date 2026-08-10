@@ -27,8 +27,8 @@ jobs:
           scripts/process_hash_all.sh
       - name: Compile
         run: |
-          texfot latexmk -xelatex main.tex --shell-escape
-          cp main.pdf /root/codebook.pdf
+          texfot latexmk -xelatex codebook.tex --shell-escape
+          cp codebook.pdf /root/codebook.pdf
       - name: Checkout
         uses: actions/checkout@v4
         with:
