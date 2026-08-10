@@ -1,4 +1,7 @@
-struct PT { ll x, y; };
+struct PT {
+  ll x, y;
+  auto operator<=>(const PT&) const = default;
+};
 PT operator+(PT p1, PT p2)
 { return PT{p1.x + p2.x, p1.y + p2.y}; }
 PT operator-(PT p1, PT p2)

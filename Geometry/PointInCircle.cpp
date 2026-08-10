@@ -1,7 +1,8 @@
-//is p4 in circumcircle of p1p2p3
-using i128 = __int128;
+// (int)
+// p1, p2, p3 must be in CCW order
+// is p4 strictly in circumcircle of p1p2p3
 ll sq(ll x) { return x * x; }
-bool in_cc(const PT &p1, const PT &p2, const PT &p3, const PT &p4) {
+bool in_cc(PT p1, PT p2, PT p3, PT p4) {
   ll u11 = p1.x - p4.x; ll u12 = p1.y - p4.y;
   ll u21 = p2.x - p4.x; ll u22 = p2.y - p4.y;
   ll u31 = p3.x - p4.x; ll u32 = p3.y - p4.y;

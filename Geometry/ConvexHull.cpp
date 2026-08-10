@@ -1,9 +1,9 @@
+// (int)
 // requires sz(pt) >= 2 & distinct points
 // points on edges are excluded
 vector<PT> ConvexHull(vector<PT> pt) {
   int n = sz(pt);
-  sort(iter(pt), [&](PT a, PT b) {
-    return pll{a.x, a.y} < pll{b.x, b.y}; });
+  sort(iter(pt));
   vector<PT> ans{pt[0]};
   For(t, 0, 1) {
     int m = sz(ans);

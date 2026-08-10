@@ -1,3 +1,6 @@
+// (FP) needs segment intersect
+// set INF per constraints; segments use lex endpoints
+const double INF = 0;
 template<class T>
 struct SweepLine {
   struct cmp {
@@ -13,25 +16,30 @@ struct SweepLine {
   vector<Line> base;
   multiset<int, cmp> sweep;
   multiset<pair<T, int>> event;
-  vector<typename multiset<int, cmp>::iterator> its;
-  vector<typename multiset<pair<T, int>>::iterator> eits;
+  using SI = typename multiset<int, cmp>::iterator;
+  using EI = typename multiset<pair<T, int>>::iterator;
+  vector<SI> its;
+  vector<EI> eits;
   bool slope_cmp(int a, int b) const {
     assert(a != -1);
     if (b == -1) return 0;
-    return sign(cross(base[a].Y - base[a].X, base[b].Y - base[b].X)) < 0;
+    return sign((base[a].b - base[a].a) ^
+      (base[b].b - base[b].a)) < 0;
   }
   T get_y(int idx) const {
     if (idx == -1) return curQ;
     Line l = base[idx];
-    if (l.X.X == l.Y.X) return l.Y.Y;
-    return ((curTime - l.X.X) * l.Y.Y + (l.Y.X - curTime) * l.X.Y) / (l.Y.X - l.X.X);
+    if (l.a.x == l.b.x) return l.b.y;
+    return ((curTime - l.a.x) * l.b.y +
+      (l.b.x - curTime) * l.a.y) /
+      (l.b.x - l.a.x);
   }
   void insert(int idx) {
     its[idx] = sweep.insert(idx);
     if (its[idx] != sweep.begin())
       update_event(*prev(its[idx]));
     update_event(idx);
-    event.emplace(base[idx].Y.X, idx + 2 * SZ(base));
+    event.emplace(base[idx].b.x, idx + 2 * sz(base));
   }
   void erase(int idx) {
     assert(eits[idx] == event.end());
@@ -45,10 +53,14 @@ struct SweepLine {
       event.erase(eits[idx]);
     eits[idx] = event.end();
     auto nxt = next(its[idx]);
-    if (nxt == sweep.end() || !slope_cmp(idx, *nxt)) return;
-    auto t = intersect(base[idx].X, base[idx].Y, base[*nxt].X, base[*nxt].Y).X;
-    if (t + eps < curTime || t >= min(base[idx].Y.X, base[*nxt].Y.X)) return;
-    eits[idx] = event.emplace(t, idx + SZ(base));
+    if (nxt == sweep.end() || !slope_cmp(idx, *nxt))
+      return;
+    auto t = intersect(base[idx].a, base[idx].b,
+      base[*nxt].a, base[*nxt].b).x;
+    if (t + eps < curTime ||
+        t >= min(base[idx].b.x, base[*nxt].b.x))
+      return;
+    eits[idx] = event.emplace(t, idx + sz(base));
   }
   void swp(int idx) {
     assert(eits[idx] != event.end());
@@ -61,22 +73,26 @@ struct SweepLine {
     update_event(idx);
   }
   // only expected to call the functions below
-  SweepLine(T t, T e, vector<Line> vec): _cmp(*this), curTime(t), eps(e), curQ(), base(vec), sweep(_cmp), event(), its(SZ(vec), sweep.end()), eits(SZ(vec), event.end()) {
-    for (int i = 0; i < SZ(base); ++i) {
+  SweepLine(T t, T e, vector<Line> vec):
+    _cmp(*this), curTime(t), eps(e), curQ(),
+    base(vec), sweep(_cmp), event(),
+    its(sz(vec), sweep.end()),
+    eits(sz(vec), event.end()) {
+    For(i, 0, sz(base) - 1) {
       auto &[p, q] = base[i];
       if (p > q) swap(p, q);
-      if (p.X <= curTime && curTime <= q.X)
+      if (p.x <= curTime && curTime <= q.x)
         insert(i);
-      else if (curTime < p.X)
-        event.emplace(p.X, i);
+      else if (curTime < p.x)
+        event.emplace(p.x, i);
     }
   }
   void setTime(T t, bool ers = false) {
     assert(t >= curTime);
-    while (!event.empty() && event.begin()->X <= t) {
+    while (!event.empty() && event.begin()->F <= t) {
       auto [et, idx] = *event.begin();
-      int s = idx / SZ(base);
-      idx %= SZ(base);
+      int s = idx / sz(base);
+      idx %= sz(base);
       if (abs(et - t) <= eps && s == 2 && !ers) break;
       curTime = et;
       event.erase(event.begin());
@@ -88,7 +104,7 @@ struct SweepLine {
   }
   T nextEvent() {
     if (event.empty()) return INF;
-    return event.begin()->X;
+    return event.begin()->F;
   }
   int lower_bound(T y) {
     curQ = y;

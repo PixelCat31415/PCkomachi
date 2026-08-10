@@ -1,3 +1,5 @@
+// (FP) needs 3D basic
+// add Point==Point; returns {} unless hull is 3D
 struct Face {
   int a, b, c;
   Face(int _a, int _b, int _c) : a(_a), b(_b), c(_c) {}
@@ -6,21 +8,25 @@ auto preprocess(auto pts) {
   auto G = pts.begin();
   vector<int> id;
   auto fail = tuple{-1, -1, -1, id};
-  int a = find_if(all(pts), [&](Pt z) {
-    return z != *G; }) - G;
+  int a = int(find_if(iter(pts), [&](Point z) {
+    return z != *G;
+  }) - G);
   if (a == sz(pts)) return fail;
-  int b = find_if(all(pts), [&](Pt z) {
-    return cross3(*G, pts[a], z) != Pt(0, 0, 0); }) -G;
+  int b = int(find_if(iter(pts), [&](Point z) {
+    return cross3(*G, pts[a], z) != Point{0, 0, 0};
+  }) - G);
   if (b == sz(pts)) return fail;
-  int c = find_if(all(pts), [&](Pt z) {
-    return sign(volume(*G, pts[a], pts[b], z)) != 0; }) - G;
+  int c = int(find_if(iter(pts), [&](Point z) {
+    return sign(volume(*G, pts[a], pts[b], z)) != 0;
+  }) - G);
   if (c == sz(pts)) return fail;
   for (int i = 0; i < sz(pts); i++)
-    if (i != a && i != b && i != c) id.pb(i);
+    if (i != a && i != b && i != c)
+      id.push_back(i);
   return tuple{a, b, c, id};
 }
 // return the faces with pts indexes
-vector<Face> convex_hull_3D(vector<Pt> pts) {
+vector<Face> convex_hull_3D(vector<Point> pts) {
   int n = sz(pts);
   if (n <= 3) return {}; // be careful about edge case
   vector<Face> now;
@@ -31,9 +37,11 @@ vector<Face> convex_hull_3D(vector<Pt> pts) {
   for (auto i : ord) {
     vector<Face> nxt;
     for (auto &f : now) {
-      auto v = volume(pts[f.a], pts[f.b], pts[f.c], pts[i]);
-      if (sign(v) <= 0) nxt.pb(f);
-      z[f.a][f.b] = z[f.b][f.c] = z[f.c][f.a] = sign(v);
+      auto v = volume(pts[f.a], pts[f.b],
+        pts[f.c], pts[i]);
+      if (sign(v) <= 0) nxt.push_back(f);
+      z[f.a][f.b] = z[f.b][f.c] =
+        z[f.c][f.a] = sign(v);
     }
     auto F = [&](int x, int y) {
       if (z[x][y] > 0 && z[y][x] <= 0)
