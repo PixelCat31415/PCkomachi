@@ -15,7 +15,7 @@ struct MCMF {
     adj[u].pb(E.size()), E.pb(edge(v, f, c));
     adj[v].pb(E.size()), E.pb(edge(u, 0, -c));
   }
-  bool SPFA() {
+  bool SPFA() { // SCOPE HASH
     rt.assign(n, -1), dis.assign(n, INF);
     vector <bool> vis(n, false);
     queue <int> q;
@@ -30,7 +30,7 @@ struct MCMF {
     }
     return dis[t] != INF;
   }
-  bool dijkstra() {
+  bool dijkstra() { // SCOPE HASH
     rt.assign(n, -1), dis.assign(n, INF);
     priority_queue <pair <int, int>, vector <pair <int, int>>, greater <pair <int, int>>> pq;
     dis[s] = 0, pq.emplace(dis[s], s);
@@ -44,7 +44,7 @@ struct MCMF {
     }
     return dis[t] != INF;
   }
-  pair <int, int> runFlow() {
+  pair <int, int> runFlow() { // SCOPE HASH
     pot.assign(n, 0);
     int cost = 0, flow = 0;
     bool fr = true;

@@ -3,7 +3,7 @@ struct HopcroftKarp {
   vector<int> adj[N];
   int match[N], dis[N], v, n, m;
   bool matched[N], vis[N];
-  bool dfs(int x) {
+  bool dfs(int x) { // SCOPE HASH
     vis[x] = true;
     for (int y : adj[x])
       if (match[y] == -1 || (dis[match[y]] == dis[x] + 1 && !vis[match[y]] && dfs(match[y]))) {
@@ -12,7 +12,7 @@ struct HopcroftKarp {
       }
     return false;
   }
-  bool bfs() {
+  bool bfs() { // SCOPE HASH
     memset(dis, -1, sizeof(int) * n);
     queue<int> q;
     for (int x = 0; x < n; ++x) if (!matched[x])
@@ -30,7 +30,7 @@ struct HopcroftKarp {
     }
     return mx < INF;
   }
-  int solve() {
+  int solve() { // SCOPE HASH
     int res = 0;
     memset(match, -1, sizeof(int) * m);
     memset(matched, 0, sizeof(bool) * n);
