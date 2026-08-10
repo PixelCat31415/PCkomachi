@@ -4,18 +4,17 @@ struct Simplex { // 0-based
   const T eps = 1e-7;
   int n, m;
   int Left[M], Down[N];
-  // Ax <= b, max c^T x
-  // result : v, xi = sol[i]. 1 based
+  // Ax <= b, max c^T x. result : v, xi = sol[i]. 1-based
   T a[M][N], b[M], c[N], v, sol[N];
   bool eq(T a, T b) {return fabs(a - b) < eps;}
   bool ls(T a, T b) {return a < b && !eq(a, b);}
-  void init(int _n, int _m) {
+  void init(int _n, int _m) { // SCOPE HASH
     n = _n, m = _m, v = 0;
     for (int i = 0; i < m; ++i) for (int j = 0; j < n; ++j) a[i][j] = 0;
     for (int i = 0; i < m; ++i) b[i] = 0;
     for (int i = 0; i < n; ++i) c[i] = sol[i] = 0;
   }
-  void pivot(int x, int y) {
+  void pivot(int x, int y) { // SCOPE HASH
     swap(Left[x], Down[y]);
     T k = a[x][y]; a[x][y] = 1;
     vector <int> nz;
@@ -35,7 +34,7 @@ struct Simplex { // 0-based
     for (int i : nz) c[i] -= k * a[x][i];
   }
   // 0: found solution, 1: no feasible solution, 2: unbounded
-  int solve() {
+  int solve() { // SCOPE HASH
     for (int i = 0; i < n; ++i) Down[i] = i;
     for (int i = 0; i < m; ++i) Left[i] = n + i;
     while (1) {

@@ -1,6 +1,6 @@
 #define rep(x, y, z) for (int x=y; x<z; x++)
-using VI = vector<int>; using VVI = vector<VI>;
-void Hessenberg(VVI &H, int N) {
+using vi = vector<int>; using vvi = vector<vi>;
+void Hessenberg(vvi &H, int N) { // SCOPE HASH
   for (int i = 0; i < N - 2; ++i) {
     for (int j = i + 1; j < N; ++j) if (H[j][i]) {
       rep(k, i, N) swap(H[i+1][k], H[j][k]);
@@ -15,9 +15,9 @@ void Hessenberg(VVI &H, int N) {
     }
   }
 }
-VI CharacteristicPoly(VVI A) {
+vi CharacteristicPoly(vvi A) { // SCOPE HASH
   int N = (int)A.size(); Hessenberg(A, N);
-  VVI P(N + 1, VI(N + 1)); P[0][0] = 1;
+  vvi P(N + 1, vi(N + 1)); P[0][0] = 1;
   for (int i = 1; i <= N; ++i) {
     rep(j, 0, i+1) P[i][j] = j ? P[i-1][j-1] : 0;
     for (int j = i - 1, val = 1; j >= 0; --j) {

@@ -1,17 +1,5 @@
-//a * p.first + b * p.second = gcd(a, b)
-pair<ll, ll> extgcd(ll a, ll b) {
-  pair<ll, ll> res;
-  if (a < 0) {
-    res = extgcd(-a, b);
-    res.first *= -1;
-    return res;
-  }
-  if (b < 0) {
-    res = extgcd(a, -b);
-    res.second *= -1;
-    return res;
-  }
-  if (b == 0) return {1, 0};
-  res = extgcd(b, a % b);
-  return {res.second, res.first - res.second * (a / b)};
+// ax+ny = 1, ax+ny == ax == 1 (mod n)
+void extgcd(ll x, ll y, ll &g, ll &a, ll &b) {
+	if (y == 0) g = x, a = 1, b = 0;
+	else extgcd(y, x % y, g, b, a), b -= (x / y) * a;
 }

@@ -1,7 +1,12 @@
-ll mul(ll x, ll y, ll p) {return (x * y - (ll)((long double)x / p * y) * p + p) % p;}
+// n < 4,759,123,141      3 : 2, 7, 61
+// n < 1,122,004,669,633  4 : 2, 13, 23, 1662803
+// n < 3,474,749,660,383  6 : primes <= 13
+// n < 2^64             7 : 
+// 2, 325, 9375, 28178, 450775, 9780504, 1795265022
+ll mul(ll a, ll b, ll n){  return (__int128)a * b % n; }
 vector<ll> chk = {2, 325, 9375, 28178, 450775, 9780504, 1795265022};
 ll Pow(ll a, ll b, ll n) {ll res = 1; for (; b; b >>= 1, a = mul(a, a, n)) if (b & 1) res = mul(res, a, n); return res;}
-bool check(ll a, ll d, int s, ll n) {
+bool check(ll a, ll d, int s, ll n) { // SCOPE HASH
   a = Pow(a, d, n);
   if (a <= 1) return 1;
   for (int i = 0; i < s; ++i, a = mul(a, a, n)) {
@@ -10,7 +15,7 @@ bool check(ll a, ll d, int s, ll n) {
   }
   return 0;
 }
-bool IsPrime(ll n) {
+bool IsPrime(ll n) { // SCOPE HASH
   if (n < 2) return 0;
   if (n % 2 == 0) return n == 2;
   ll d = n - 1, s = 0;
@@ -19,7 +24,7 @@ bool IsPrime(ll n) {
   return 1;
 }
 const vector<ll> small = {2, 3, 5, 7, 11, 13, 17, 19};
-ll FindFactor(ll n) {
+ll FindFactor(ll n) { // SCOPE HASH
   if (IsPrime(n)) return 1;
   for (ll p : small) if (n % p == 0) return p;
   ll x, y = 2, d, t = 1;
@@ -41,7 +46,7 @@ ll FindFactor(ll n) {
     }
   }
 }
-map<ll, int> PollardRho(ll n) {
+map<ll, int> PollardRho(ll n) { // SCOPE HASH
   map<ll, int> res;
   if (n == 1) return res;
   if (IsPrime(n)) return ++res[n], res;

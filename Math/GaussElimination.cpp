@@ -1,6 +1,6 @@
-using VI = vector<int>; // be careful if A.empty()
-using VVI = vector<VI>; // ensure that 0 <= x < mod
-pair<VI, VVI> gauss(VVI A, VI b) { // solve Ax=b
+using vi = vector<int>; // be careful if A.empty()
+using vvi = vector<vi>; // ensure that 0 <= x < mod
+pair<vi, vvi> gauss(vvi A, vi b) { // solve Ax=b
   const int N = (int)A.size(), M = (int)A[0].size();
   vector<int> depv, free(M, true); int rk = 0;
   for (int i = 0; i < M; i++) {
@@ -23,7 +23,7 @@ pair<VI, VVI> gauss(VVI A, VI b) { // solve Ax=b
   }
   for (int i = rk; i < N; i++)
     if (b[i] != 0) return {{}, {}}; // not consistent
-  VI x(M); VVI h;
+  vi x(M); vvi h;
   for (int i = 0; i < rk; i++) x[depv[i]] = b[i];
   for (int i = 0; i < M; i++) if (free[i]) {
     h.emplace_back(M); h.back()[i] = 1;
