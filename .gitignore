@@ -3,6 +3,7 @@
 
 # ignore built codebook (will be auto-built with github actions)
 codebook/codebook.pdf
+/codebook.pdf
 
 # ------------------------------------------
 
