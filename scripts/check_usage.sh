@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ ! -f content.tex ]]; then
-    echo "Please execute the script at ideograph_advantage/"
+    echo "Please execute the script at PCkomachi/"
     exit 1
 fi
 
