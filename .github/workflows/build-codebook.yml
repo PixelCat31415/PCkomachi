@@ -10,6 +10,9 @@ jobs:
     container: ghcr.io/wiwiho/codebook:latest
     permissions:
       contents: write
+    outputs:
+      pages: ${{ steps.pages.outputs.count }}
+      max: ${{ steps.pages.outputs.max }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
