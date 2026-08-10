@@ -128,9 +128,15 @@ stringstyle=\itshape\color{Green4},
 \fancyhead[R]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\contentsname}{Contents}
+\newcommand{\getfilehash}[1]{\captureshell{cpp #1 -dD -P -fpreprocessed | tr -d '[:space:]' | md5sum | cut -c-6}}
 \newcommand{\inputcode}[2]{
-    \subsection[#1]{#1 \footnotesize{[\texttt{\captureshell{cpp #2 -dD -P -fpreprocessed | tr -d '[:space:]' | md5sum | cut -c-6}}]}}
-    \lstinputlisting{#2}
+    \IfFileExists{#2.auto}{
+        \subsection[#1]{#1 \footnotesize{[\texttt{\getfilehash{#2.auto}}]}}
+        \lstinputlisting{#2.auto}
+    }{
+        \subsection[#1]{#1 \footnotesize{[\texttt{\getfilehash{#2}}]}}
+        \lstinputlisting{#2}
+    }
 }
 
 \scriptsize
