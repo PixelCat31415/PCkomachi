@@ -289,7 +289,7 @@ struct Poly : vector<int> { // coefficients in [0, P)
   }
   // == PART HASH ==
 };
-#undef fi
 #undef V
 #undef neg
+#undef fi
 using Poly_t = Poly<1 << 21, 3>;
