@@ -1,5 +1,4 @@
-// (int)
-// CCW from (1, 0), without length tie-breaking
+// (int) CCW from (1, 0), without length tie-breaking
 int halfplane(PT p) {
   if (sign(p * p) == 0) return 0;
   bool upper = sign(p.y) > 0 ||

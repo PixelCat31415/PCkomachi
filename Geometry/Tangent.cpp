@@ -21,8 +21,7 @@ vector<Line> Tangent(Cir c, PT p) { // SCOPE HASH
   }
   return z;
 }
-vector <Line> Tangent(Cir c1, Cir c2, int sign1) { // SCOPE HASH
-  // sign1 = 1 for outer, -1 for inter
+vector <Line> Tangent(Cir c1, Cir c2, int sign1) { // sign1 = 1 for outer, -1 for inter // SCOPE HASH
   vector <Line> ret;
   double d_sq = abs2(c1.o - c2.o);
   if (sign(d_sq) == 0) return ret;

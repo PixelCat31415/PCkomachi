@@ -1,5 +1,4 @@
-// (int)
-// C must be a convex polygon in cyclic order
+// (int) C must be a convex polygon in cyclic order
 bool PointInConvex(const vector<PT> &C, PT p,
                    bool strict = true) {
   int a = 1, b = int(C.size()) - 1, r = !strict;

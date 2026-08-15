@@ -26,10 +26,10 @@ void RotSwpLine(int n, PT* pts) {
   For(ie, 0, ne - 1) {
     int i, j; tie(i, j) = ev[ie].S;
     // update swap i, j
-    rk[i]++; rk[j]--;   // rk[point idx]: rank in ord
+    rk[i]++; rk[j]--;  // rk[point idx]: rank in ord
     tie(ord[rk[i]], ord[rk[i] - 1]) = tie(i, j);
     if (ie == ne - 1 ||
-        polar(ev[ie + 1].F, ev[ie].F) != 0) {
+      polar(ev[ie + 1].F, ev[ie].F) != 0) {
       // update answer
     }
   }

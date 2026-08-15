@@ -1,5 +1,4 @@
-// (int)
-// requires sz(pt) >= 2 & distinct points
+// (int) requires sz(pt) >= 2 & distinct points
 // points on edges are excluded
 vector<PT> ConvexHull(vector<PT> pt) {
   int n = sz(pt);
