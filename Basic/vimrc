@@ -6,4 +6,4 @@ inoremap {<CR> {<CR>}<ESC>O
 ca Hash w !cpp -dD -P -fpreprocessed \| tr -d '[:space:]' \| md5sum \| cut -c-6
 inoremap fj <ESC>
 vnoremap fj <ESC>
-" -D_GLIBCXX_ASSERTIONS, -D_GLIBCXX_DEBUG
+// -D_GLIBCXX_ASSERTIONS, -D_GLIBCXX_DEBUG
