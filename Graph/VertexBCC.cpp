@@ -17,7 +17,7 @@ struct BCC{ // 0-based, allow multi edges but not allow loops
   void add_v(int v){ bcc_v.back().pb(v); }
   void add_e(int e){ bcc_e.back().pb(e); }
   void build(){
-    vector<int> in(n, -1), low(n, -1), stk;
+    vector<int> dfn(n, -1), low(n, -1), stk;
     vector<vector<int>> up(n);
     int ts = 0;
     auto _dfs = [&](auto dfs, int now, int par, int pe) -> void{
@@ -33,8 +33,8 @@ struct BCC{ // 0-based, allow multi edges but not allow loops
         }
         dfs(dfs, v, now, e);
         low[now] = min(low[now], low[v]);
-      }
-      if((now != par && low[now] >= in[par]) || (now == par && SZ(g[now]) == 0)){
+      } // For Edge BCC, replace to low[now] == in[now] (for any now)
+      if((now != par && low[now] >= in[par]) || (now == par && sz(g[now]) == 0)){
         make_bcc();
         for(int v = stk.back();; v = stk.back()){
           stk.pop_back(), add_v(v);
