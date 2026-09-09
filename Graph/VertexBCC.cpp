@@ -6,7 +6,7 @@ struct BCC{ // 0-based, allow multi edges but not allow loops
   vector<vector<pii>> g; // original graph
   vector<pii> edges; // 0-based
   BCC(int _n, vector<pii> _edges):
-    n(_n), m(SZ(_edges)), g(_n), edges(_edges){
+    n(_n), m(sz(_edges)), g(_n), edges(_edges){
       for(int i = 0; i < m; i++){
         auto [u, v] = edges[i];
         g[u].pb(pii(v, i)); g[v].pb(pii(u, i));

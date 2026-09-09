@@ -22,7 +22,7 @@ struct SteinerTree { // 0-base
   }
   int solve(const vector<int> &ter) {
     shortest_path();
-    int t = SZ(ter);
+    int t = sz(ter);
     for (int i = 0; i < (1 << t); ++i)
       for (int j = 0; j < n; ++j) dp[i][j] = INF;
     for (int i = 0; i < n; ++i) dp[0][i] = vcost[i];

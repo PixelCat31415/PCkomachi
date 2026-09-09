@@ -6,7 +6,7 @@
 vector<int> smawk(int N, int M, auto &&select) {
   auto dc = [&](auto self, const vector<int> &r, const vector<int> &c) {
     if (r.empty()) return vector<int>{};
-    const int n = SZ(r); vector<int> ans(n), nr, nc;
+    const int n = sz(r); vector<int> ans(n), nr, nc;
     for (int i : c) {
       while (!nc.empty() &&
           select(r[nc.size() - 1], nc.back(), i))

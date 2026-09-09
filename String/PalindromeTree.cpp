@@ -18,7 +18,7 @@ struct PalindromicTree {
     s.pb(c -= 'a'); ++n;
     int cur = getFail(last);
     if (!st[cur].nxt[c]) {
-      int now = SZ(st);
+      int now = sz(st);
       st.pb(st[cur].len + 2);
       st[now].fail = st[getFail(st[cur].fail)].nxt[c];
       st[cur].nxt[c] = now;
@@ -27,7 +27,7 @@ struct PalindromicTree {
     last = st[cur].nxt[c]; ++st[last].cnt;
   }
   void dpcnt() {
-    for(int i = SZ(st) - 1; i >= 0; i--){
+    for(int i = sz(st) - 1; i >= 0; i--){
       auto nd = st[i];
       st[nd.fail].cnt += nd.cnt;
     }
