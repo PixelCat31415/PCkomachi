@@ -14,10 +14,9 @@ void fwt(vector<int>& a, int n, int oxx, int oyx, int oxy, int oyy){ // 2^20, 0.
 #undef y
       }
 }
-
 vector<int> subset_conv(vector<int> a, vector<int> b, int L){
-  int n = 1<<L; // 2^20, 5.5s, using c-sytle arrays -> 2.1s
-  vector<vector<int> > f(L+1, vector<int>(n)), g=f, h=f;
+  int n = 1<<L; // 2^20, 5.5s, c-sytle arrays -> 2.1s
+  vector<vector<int>> f(L+1, vector<int>(n)), g=f, h=f;
   vector<int> ct(n), c(n);
   for(int i=1;i<n;i++) ct[i] = ct[i&(i-1)] + 1;
   for(int i=0;i<n;i++) { f[ct[i]][i] = a[i]; g[ct[i]][i] = b[i]; }
