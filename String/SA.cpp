@@ -4,7 +4,7 @@ template<int N>
 struct SA {
   int sa[N], tmp[2][N], c[N], rk[N], lcp[N];
   void buildSA(const string &s) { // SCOPE HASH
-    int *x = tmp[0], *y = tmp[1], n = sz(s), m = n;
+    int *x = tmp[0], *y = tmp[1], n = sz(s), m = 256;
     FOR(i, 0, m - 1) c[i] = 0;
     FOR(i, 0, n - 1) c[x[i] = s[i]]++;
     FOR(i, 1, m - 1) c[i] += c[i - 1];
