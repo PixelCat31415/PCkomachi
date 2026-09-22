@@ -16,7 +16,7 @@ int ori(PT a, PT b, PT c) { // is C to the left of A->B
   return sign((b-a)^(c-a)); }
 bool btw(PT a, PT b, PT c) { // is C between AB
   return !ori(a, b, c) && sign((a-c)*(b-c)) <= 0; }
-PT ccw90(PT p) { return PT(-p.y, p.x); }
+PT ccw90(PT p) { return PT{-p.y, p.x}; }
 // == PART HASH ==
 // change PT::x, y to FP type, replace sign()
 // needs PT+-PT, PT*/scalar
